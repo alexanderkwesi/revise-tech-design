@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Revise Tech Ltd | Invest in Tomorrow’s Technology, Today</title>
+    <meta name="description" content="Revise Tech Ltd is building and scaling a portfolio of ten production-stage AI, fintech, and SaaS products. Redesigned with a premium neo-brutalist aesthetic." />
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- Sticky Navbar -->
+    <nav class="navbar neo-border">
+      <div class="container nav-container">
+        <a href="#" class="nav-brand">
+          <div class="brand-icon">RT</div>
+          <div class="brand-details">
+            <h1>Revise Tech</h1>
+            <p>UK Venture Builder &amp; Incubator</p>
+          </div>
+        </a>
+        
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="#portfolio" class="nav-link">Portfolio</a></li>
+          <li class="nav-item"><a href="#why" class="nav-link">Why Invest</a></li>
+          <li class="nav-item"><a href="#services" class="nav-link">Services</a></li>
+          <li class="nav-item"><a href="#cases" class="nav-link">Proven Impact</a></li>
+          <li class="nav-item"><a href="#contact" class="nav-link">Investor Call</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="#contact" class="neo-btn neo-btn-accent">Book Call →</a>
+        </div>
+
+        <button class="nav-toggle" aria-label="Toggle Navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobile Nav Overlay -->
+    <div class="mobile-nav-overlay">
+      <ul class="mobile-nav-list">
+        <li class="mobile-nav-item"><a href="#portfolio" class="mobile-nav-link">Portfolio</a></li>
+        <li class="mobile-nav-item"><a href="#why" class="mobile-nav-link">Why Invest</a></li>
+        <li class="mobile-nav-item"><a href="#services" class="mobile-nav-link">Services</a></li>
+        <li class="mobile-nav-item"><a href="#cases" class="mobile-nav-link">Proven Impact</a></li>
+        <li class="mobile-nav-item"><a href="#contact" class="mobile-nav-link">Investor Call</a></li>
+      </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+      <div class="container hero-grid-layout">
+        <div>
+          <div class="hero-tag"><span></span> 12 active projects · UK-based</div>
+          
+          <h2 class="hero-title-text">
+            Back the next generation of 
+            <span class="highlight-blue">intelligent</span> 
+            technology<span class="highlight-red">.</span>
+          </h2>
+          
+          <p class="hero-description">
+            Revise Tech Ltd builds and scales a portfolio of production-stage AI, fintech, and SaaS products. Engineered in the UK and built for global scale.
+          </p>
+
+          <div class="hero-bullets">
+            <div class="hero-bullet-card">12 Active Projects</div>
+            <div class="hero-bullet-card">5+ AI-Native Products</div>
+            <div class="hero-bullet-card">UK Registered &amp; Regulated</div>
+          </div>
+
+          <div class="hero-actions-container">
+            <a href="#contact" class="neo-btn neo-btn-primary">Schedule Call →</a>
+            <a href="#portfolio" class="neo-btn">View Portfolio</a>
+          </div>
+        </div>
+
+        <!-- Right Column: Interactive Mondrian Dashboard -->
+        <div class="mondrian-board">
+          <div class="mondrian-cell mondrian-cell-1">
+            <span class="mondrian-number" data-target="12" data-suffix="">0</span>
+            <span class="mondrian-label">Active Portfolio Projects</span>
+            <span class="mondrian-desc">Diverse incubation stage across multiple technology sectors.</span>
+          </div>
+          <div class="mondrian-cell mondrian-cell-2">
+            <span class="mondrian-number">AI</span>
+            <span class="mondrian-label">Native Core</span>
+            <span class="mondrian-desc">Advanced NLP, custom LLM routing, and OCR automation.</span>
+          </div>
+          <div class="mondrian-cell mondrian-cell-3">
+            <span class="mondrian-number" data-target="5" data-suffix="+">0</span>
+            <span class="mondrian-label">AI Platforms</span>
+            <span class="mondrian-desc">Live production and Beta products running today.</span>
+          </div>
+          <div class="mondrian-cell mondrian-cell-4">
+            <span class="mondrian-number">UK</span>
+            <span class="mondrian-label">Engineering</span>
+          </div>
+          <div class="mondrian-cell mondrian-cell-5">
+            <span class="mondrian-number" data-target="12000" data-prefix="+" data-suffix="">0</span>
+            <span class="mondrian-label">Active Users</span>
+            <span class="mondrian-desc">Onboarded across portfolio beta networks in under 6 months.</span>
+          </div>
+          <div class="mondrian-cell mondrian-cell-6">
+            <span class="mondrian-label">Valuation Uplift</span>
+            <span class="mondrian-desc">Secured early-stage investment slots.</span>
+          </div>
+          <div class="mondrian-cell mondrian-cell-7">
+            <span class="mondrian-label">Tech Stack Pillars</span>
+            <span class="mondrian-desc" style="font-family: monospace; font-size: 0.65rem;">React · Python · Node.js · Go</span>
+          </div>
+          <div class="mondrian-cell mondrian-cell-8 bg-yellow">
+            <span class="mondrian-label">Opportunity Status</span>
+            <span class="mondrian-desc" style="font-weight: 700;">OPEN FOR INVESTMENT</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="container">
+      <div class="section-header-block">
+        <div>
+          <span class="section-subtitle-tag">Investment Portfolio</span>
+          <h3 class="section-main-title">Twelve live products in high-growth verticals.</h3>
+        </div>
+        <p class="section-header-desc">
+          Each project is live or in active development, positioned in multi-billion-pound global markets with structured paths to scale.
+        </p>
+      </div>
+
+      <!-- Interactive Filters -->
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="ai">AI-Native</button>
+        <button class="filter-btn" data-filter="saas">SaaS &amp; Operations</button>
+        <button class="filter-btn" data-filter="fintech">Fintech &amp; Adtech</button>
+        <button class="filter-btn" data-filter="emerging">AgriTech &amp; Emerging</button>
+      </div>
+
+      <!-- Projects Grid Container -->
+      <div id="projectGrid" class="portfolio-container-grid">
+        <!-- Injected dynamically by projects.js -->
+      </div>
+    </section>
+
+    <!-- Why Invest Section -->
+    <section id="why" class="why-invest-section">
+      <div class="container">
+        <div class="section-header-block">
+          <div>
+            <span class="section-subtitle-tag">Why Invest</span>
+            <h3 class="section-main-title">A diversified, AI-first portfolio with UK governance.</h3>
+          </div>
+          <p class="section-header-desc">
+            Revise Tech combines verified execution with structural clarity, allowing investors to participate in a diversified technological incubator.
+          </p>
+        </div>
+
+        <div class="why-grid-layout">
+          <!-- Grid points -->
+          <div class="why-left-grid">
+            <div class="why-neo-card">
+              <div class="why-icon-block">🚀</div>
+              <h4>Proven Execution</h4>
+              <p>Ten products actively live or in development—demonstrating our capacity to build, ship, and iterate rapidly.</p>
+            </div>
+            <div class="why-neo-card">
+              <div class="why-icon-block">🤖</div>
+              <h4>AI-First Portfolio</h4>
+              <p>Over half of our active portfolio is AI-native, placing Revise Tech in the highest-growth technology segment globally.</p>
+            </div>
+            <div class="why-neo-card">
+              <div class="why-icon-block">🌍</div>
+              <h4>Diverse Markets</h4>
+              <p>Broad sector exposure spanning EdTech, AgriTech, Fintech, SaaS, and document processing, spreading market risk.</p>
+            </div>
+            <div class="why-neo-card">
+              <div class="why-icon-block">🏛️</div>
+              <h4>UK Governance</h4>
+              <p>Registered UK entity with clear reporting structures, standard legal frameworks, and regulatory transparency.</p>
+            </div>
+          </div>
+
+          <!-- Sidebar block -->
+          <aside class="why-sidebar-card">
+            <h3>Strategic Partnership</h3>
+            <p>We invite investors who provide more than funding. Network access, industry knowledge, and operational expertise are highly valued.</p>
+            <ul class="why-sidebar-list">
+              <li>Preferential terms for initial early-stage funding rounds.</li>
+              <li>Direct connection with the founders and technical roadmap input.</li>
+              <li>Detailed quarterly milestones and reporting.</li>
+              <li>Co-development opportunities on future incubations.</li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services-section">
+      <div class="container">
+        <div class="section-header-block">
+          <div>
+            <span class="section-subtitle-tag">Premium Services</span>
+            <h3 class="section-main-title">Enterprise-grade technology that scales.</h3>
+          </div>
+          <p class="section-header-desc">
+            Beyond our incubator portfolio, we deliver expert engineering, systems consultancy, and enterprise IT supply to scale your operation.
+          </p>
+        </div>
+
+        <div class="services-grid-layout">
+          <!-- Service Card 1 -->
+          <div class="service-neo-card">
+            <span class="service-badge">Software Engineering</span>
+            <h3>Web Apps, SaaS &amp; Agents</h3>
+            <p>Modern product engineering using React, Python, Go, and Node.js built for performance, security, and cloud scalability.</p>
+            <ul class="service-list-block">
+              <li>Custom API &amp; platform architecture</li>
+              <li>AI workflow &amp; agent integration</li>
+              <li>Cloud-native serverless systems</li>
+            </ul>
+          </div>
+
+          <!-- Service Card 2 -->
+          <div class="service-neo-card">
+            <span class="service-badge">Tech Consultancy</span>
+            <h3>Cloud, DevOps &amp; Strategy</h3>
+            <p>Strategic cloud consultation to optimize architectures, reduce hosting expenditures, and maximize deployment frequency.</p>
+            <ul class="service-list-block">
+              <li>AWS, Azure, and Google Cloud strategy</li>
+              <li>Infrastructure as Code &amp; CI/CD</li>
+              <li>Zero-downtime database migrations</li>
+            </ul>
+          </div>
+
+          <!-- Service Card 3 -->
+          <div class="service-neo-card">
+            <span class="service-badge">IT Supply</span>
+            <h3>Infrastructure Procurement</h3>
+            <p>Provisioning of systems and enterprise hardware, lifecycle management, and workspace rollouts with secure provisioning.</p>
+            <ul class="service-list-block">
+              <li>Network architecture provisioning</li>
+              <li>Workstation and endpoint management</li>
+              <li>Procurement &amp; warranty management</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Case Studies / Impact Section -->
+    <section id="cases" class="cases-section">
+      <div class="container">
+        <div class="section-header-block">
+          <div>
+            <span class="section-subtitle-tag">Proven Impact</span>
+            <h3 class="section-main-title">Real-world results that de-risk your choice.</h3>
+          </div>
+          <p class="section-header-desc">
+            Case studies that highlight our capacity to deliver measurable success for early-stage ventures and enterprise teams alike.
+          </p>
+        </div>
+
+        <div class="cases-grid-layout">
+          <!-- Case 1 -->
+          <div class="case-neo-card">
+            <div class="case-stat" data-target="340" data-prefix="+" data-suffix="%">+0%</div>
+            <div class="case-tagline">Efficiency / Startup Hypergrowth</div>
+            <p>Scaled a fintech company's system capacity from 0 to 12,000 active users in 6 months utilizing AWS serverless pipelines.</p>
+          </div>
+
+          <!-- Case 2 -->
+          <div class="case-neo-card">
+            <div class="case-stat" data-target="70" data-suffix="%">0%</div>
+            <div class="case-tagline">Faster / Automation &amp; DevOps</div>
+            <p>Decreased time-to-deployment by 70% and reduced cloud hosting costs by 32% with customized Terraform and Kubernetes systems.</p>
+          </div>
+
+          <!-- Case 3 -->
+          <div class="case-neo-card">
+            <div class="case-stat" data-target="400" data-suffix="+">0</div>
+            <div class="case-tagline">Endpoints / Enterprise Rollout</div>
+            <p>Delivered fully compliant office hardware deployment and security hardening for an enterprise organization with 400+ employees.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="contact" class="contact-section">
+      <div class="container">
+        <div class="section-header-block">
+          <div>
+            <span class="section-subtitle-tag">Investor Call</span>
+            <h3 class="section-main-title">co-own the future of digital solutions.</h3>
+          </div>
+          <p class="section-header-desc">
+            Provide your project focus areas and investment capacity, and a lead from Revise Tech will reply within 24 hours to schedule a session.
+          </p>
+        </div>
+
+        <div class="contact-grid-layout">
+          <!-- Form Block -->
+          <div class="contact-card-box" style="padding: 2.5rem;">
+            <h3>Schedule an Investor Call</h3>
+            <p style="margin-bottom: 1.5rem;">Explore our projects, technical roadmap, and investment parameters at your convenience.</p>
+            
+            <!-- Google Forms Responsive Embed Container -->
+            <!-- Swap 'YOUR_GOOGLE_FORM_ID' with your real Google Form ID (e.g. 1FAIpQLS...) -->
+            <div class="google-form-container" style="width: 100%; height: 600px; border: 2.5px solid var(--border-color); box-shadow: 4px 4px 0px #000000; margin-bottom: 1.5rem; overflow: hidden; background: var(--color-white);">
+              <iframe id="google-form-iframe" src="https://forms.gle/pxE3fj1o9LTeP1Sw5" width="100%" height="100%" style="border: none;">Loading…</iframe>
+            </div>
+
+            <p class="contact-meta-note">
+              Prefer direct channels? Email us directly at <a href="mailto:seankwesi24@googlemail.com">seankwesi24@googlemail.com</a>.
+            </p>
+          </div>
+
+          <!-- Sidebar block -->
+          <div class="contact-sidebar-flow">
+            <div class="contact-sidebar-block">
+              <h4>Topics for Discussion</h4>
+              <p>Consider highlighting these focus areas in your Typeform inquiry:</p>
+              <ul class="why-sidebar-list" style="margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; list-style: none;">
+                <li style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; font-weight: 600; color: var(--text-color);">
+                  <span style="font-weight: bold; color: var(--color-blue); font-size: 1rem;">●</span> Portfolio Walkthroughs &amp; Deep-Dives
+                </li>
+                <li style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; font-weight: 600; color: var(--text-color);">
+                  <span style="font-weight: bold; color: var(--color-blue); font-size: 1rem;">●</span> Term Sheet Details &amp; Ticket Sizes
+                </li>
+                <li style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; font-weight: 600; color: var(--text-color);">
+                  <span style="font-weight: bold; color: var(--color-blue); font-size: 1rem;">●</span> Q&amp;A Sessions With Founders
+                </li>
+              </ul>
+            </div>
+
+            <div class="contact-sidebar-block">
+              <h4>Incubator Alignment</h4>
+              <p>We are particularly aligned with strategic partners containing industry roots in AI development, SaaS operations, regulated finance, or legal tech.</p>
+            </div>
+
+            <div class="contact-sidebar-block">
+              <h4>Meeting Medium</h4>
+              <p>First discovery meetings are held via Google Meet, Microsoft Teams, or in-person at our central London offices.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive PayPal Funding Modal -->
+    <div id="donationModal" class="modal-overlay">
+      <div class="modal-card">
+        <button class="modal-close" id="closeDonationModal" aria-label="Close Modal">&times;</button>
+        
+        <div class="modal-header">
+          <span class="modal-subtitle">Direct Project Funding</span>
+          <h3 id="modalProjectTitle">Support Project Name</h3>
+          <p id="modalProjectDesc">Directly back the development and launch of our incubating tech applications.</p>
+        </div>
+        
+        <div class="modal-body">
+          <!-- Preset Donation Tiers -->
+          <div class="donation-presets">
+            <label class="modal-label">Choose Contribution Tier</label>
+            <div class="presets-grid">
+              <button class="preset-btn active" data-amount="10">£10</button>
+              <button class="preset-btn" data-amount="25">£25</button>
+              <button class="preset-btn" data-amount="50">£50</button>
+              <button class="preset-btn" data-amount="100">£100</button>
+            </div>
+          </div>
+          
+          <!-- Custom Amount & Currency Input -->
+          <div class="custom-amount-row">
+            <div class="form-group">
+              <label for="customAmount" class="modal-label">Custom Amount</label>
+              <div class="input-wrapper">
+                <span class="currency-symbol" id="modalCurrencySymbol">£</span>
+                <input type="number" id="customAmount" placeholder="Other amount" min="5" step="1" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="donationCurrency" class="modal-label">Currency</label>
+              <select id="donationCurrency" class="form-select-glass">
+                <option value="GBP">GBP (£)</option>
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Optional Backer Details -->
+          <div class="backer-details">
+            <div class="form-group" style="margin-bottom: 0.8rem;">
+              <label for="backerName" class="modal-label">Your Name (Optional)</label>
+              <input type="text" id="backerName" class="form-input-glass" placeholder="Anonymous Backer" />
+            </div>
+            <div class="form-group">
+              <label for="backerMessage" class="modal-label">Support Message (Optional)</label>
+              <textarea id="backerMessage" class="form-textarea-glass" rows="2" placeholder="Send an encouraging message to the development team..."></textarea>
+            </div>
+          </div>
+
+          <!-- PayPal Button Container -->
+          <div class="paypal-section">
+            <label class="modal-label">Secure Checkout</label>
+            <div id="paypal-button-container"></div>
+          </div>
+        </div>
+
+        <!-- Success View Overlay -->
+        <div class="modal-success-screen" id="modalSuccessScreen">
+          <div class="success-icon-wrapper">
+            <svg class="checkmark-svg" viewBox="0 0 52 52">
+              <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+              <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+          </div>
+          <h3>Funding Complete!</h3>
+          <p>Thank you for supporting <strong id="successProjectName">Project</strong>. Your direct payment contribution has successfully processed via PayPal, helping us build the future.</p>
+          <button class="neo-btn neo-btn-primary" id="successCloseBtn" style="padding: 0.5rem 1.5rem; width: 100%;">Close Window</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="neo-footer">
+      <div class="container footer-content">
+        <span class="footer-copyright">
+          © 2026 Revise Tech Ltd — All trademarks and intellectual property belong to their respective owners.
+        </span>
+        <div class="footer-links-row">
+          <a href="#portfolio" class="footer-link-item">Portfolio</a>
+          <a href="#why" class="footer-link-item">Why Invest</a>
+          <a href="#services" class="footer-link-item">Services</a>
+          <a href="#contact" class="footer-link-item">Call</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="projects.js"></script>
+  </body>
+</html>

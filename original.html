@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Revise Tech Ltd | Invest in Tomorrow’s Technology, Today</title>
+  <!-- Font & minimal reset -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #ffffff;
+      color: #0f172a;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* header / nav */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 0;
+      flex-wrap: wrap;
+      gap: 1rem;
+      border-bottom: 1px solid #eef2f6;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      background: #0f172a;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .brand-text span {
+      display: block;
+      font-size: 0.75rem;
+      color: #64748b;
+      font-weight: 400;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #334155;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover {
+      color: #0f172a;
+    }
+
+    .nav-cta {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 0.6rem 1.4rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: transparent;
+      text-decoration: none;
+    }
+
+    .btn-outline {
+      border-color: #d0d8e3;
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .btn-outline:hover {
+      border-color: #0f172a;
+      background: #f8fafc;
+    }
+
+    .btn-primary {
+      background: #0f172a;
+      color: white;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.15);
+    }
+
+    .btn-primary:hover {
+      background: #1e293b;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.2);
+    }
+
+    /* hero */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      padding: 3.5rem 0 2.5rem;
+    }
+
+    .hero-kicker {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .pill-soft {
+      background: #f1f5f9;
+      border-radius: 999px;
+      padding: 0.25rem 0.9rem;
+      border: 1px solid #e2e8f0;
+      font-size: 0.75rem;
+      color: #334155;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .pill-soft span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #0f172a;
+      border-radius: 999px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title span {
+      background: linear-gradient(145deg, #0f172a, #475569);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: #475569;
+      max-width: 30rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.25rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .metric {
+      background: #f1f5f9;
+      padding: 0.3rem 1rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      color: #1e293b;
+    }
+
+    .metric strong {
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-note {
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    .hero-note strong {
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    /* hero right card */
+    .hero-card {
+      background: #f8fafc;
+      border-radius: 28px;
+      padding: 1.6rem;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 18px 45px -12px rgba(15, 23, 42, 0.12);
+    }
+
+    .hero-card-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-chip {
+      background: #0f172a;
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .hero-tagline {
+      font-size: 0.8rem;
+      color: #475569;
+      margin-top: 0.25rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .mini-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 0.75rem;
+      font-size: 0.75rem;
+    }
+
+    .mini-card h4 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .mini-card span {
+      display: block;
+      margin-top: 0.3rem;
+      color: #64748b;
+      font-size: 0.7rem;
+    }
+
+    .hero-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .hero-pill {
+      font-size: 0.75rem;
+      color: #475569;
+    }
+
+    .hero-pill strong {
+      color: #0f172a;
+    }
+
+    .hero-floating {
+      margin-top: 1rem;
+      background: #0f172a;
+      color: #f1f5f9;
+      border-radius: 20px;
+      padding: 0.8rem 1rem;
+      font-size: 0.78rem;
+      border: 1px solid #1e293b;
+    }
+
+    .hero-floating strong {
+      display: block;
+      font-size: 0.85rem;
+    }
+
+    /* sections */
+    section {
+      margin: 4rem 0 3rem;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-kicker {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #475569;
+      margin-bottom: 0.2rem;
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .section-sub {
+      color: #64748b;
+      max-width: 28rem;
+      font-size: 0.95rem;
+    }
+
+    /* portfolio grid */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .project-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 1.2rem;
+      transition: border-color 0.15s;
+    }
+
+    .project-card:hover {
+      border-color: #b0c0d4;
+    }
+
+    .project-pill {
+      font-size: 0.65rem;
+      background: #f1f5f9;
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      color: #334155;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-pill span {
+      width: 6px;
+      height: 6px;
+      background: #0f172a;
+      border-radius: 999px;
+    }
+
+    .project-card h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .project-meta {
+      font-size: 0.8rem;
+      color: #475569;
+      margin-bottom: 0.25rem;
+    }
+
+    .project-status {
+      font-size: 0.7rem;
+      color: #64748b;
+      margin-top: 0.25rem;
+    }
+
+    .project-footer {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: #64748b;
+      margin-top: 0.7rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid #eef2f6;
+    }
+
+    .project-link {
+      display: inline-block;
+      margin-top: 0.5rem;
+      font-size: 0.7rem;
+      color: #0f172a;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: 0.1rem 0.7rem;
+      transition: background 0.1s;
+      text-decoration: none;
+    }
+
+    .project-link:hover {
+      background: #f1f5f9;
+    }
+
+    /* why grid */
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 2rem;
+    }
+
+    .why-points {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .why-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 1rem;
+    }
+
+    .why-icon {
+      font-size: 1.4rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .why-card h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .why-card p {
+      font-size: 0.8rem;
+      color: #475569;
+    }
+
+    .why-aside {
+      background: #0f172a;
+      border-radius: 20px;
+      padding: 1.4rem;
+      color: #f1f5f9;
+      border: 1px solid #1e293b;
+    }
+
+    .why-aside h3 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .why-aside p {
+      color: #94a3b8;
+      font-size: 0.85rem;
+    }
+
+    .why-aside ul {
+      list-style: none;
+      margin-top: 0.7rem;
+    }
+
+    .why-aside li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: #cbd5e1;
+    }
+
+    .why-aside li::before {
+      content: "•";
+      color: #94a3b8;
+    }
+
+    /* services */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .service-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 1.2rem;
+    }
+
+    .service-chip {
+      font-size: 0.65rem;
+      background: #f1f5f9;
+      padding: 0.2rem 0.8rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      color: #334155;
+    }
+
+    .service-chip span {
+      width: 6px;
+      height: 6px;
+      background: #0f172a;
+      border-radius: 999px;
+    }
+
+    .service-card h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin: 0.5rem 0 0.2rem;
+    }
+
+    .service-list {
+      list-style: none;
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: #475569;
+    }
+
+    .service-list li::before {
+      content: "▹ ";
+      color: #0f172a;
+    }
+
+    /* case */
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .case-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 1.2rem;
+    }
+
+    .case-metric {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .case-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #64748b;
+    }
+
+    /* contact */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 2rem;
+    }
+
+    .contact-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 24px;
+      padding: 1.5rem;
+    }
+
+    .contact-card h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .contact-card p {
+      color: #475569;
+      font-size: 0.9rem;
+    }
+
+    .contact-form {
+      display: grid;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .field {
+      display: grid;
+      gap: 0.2rem;
+    }
+
+    .field label {
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .field input, .field textarea {
+      border-radius: 14px;
+      border: 1px solid #d0d8e3;
+      padding: 0.6rem 0.8rem;
+      font-size: 0.85rem;
+      background: #fafcff;
+      transition: 0.15s;
+      font-family: inherit;
+    }
+
+    .field input:focus, .field textarea:focus {
+      outline: none;
+      border-color: #0f172a;
+      box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.08);
+    }
+
+    .contact-meta {
+      margin-top: 0.8rem;
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    .contact-meta a {
+      color: #0f172a;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .contact-aside {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .contact-aside strong {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .contact-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .contact-chip {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: 0.2rem 0.8rem;
+      font-size: 0.75rem;
+      color: #334155;
+    }
+
+    .contact-aside p {
+      font-size: 0.85rem;
+      color: #475569;
+    }
+
+    /* footer */
+    footer {
+      border-top: 1px solid #eef2f6;
+      padding: 1.5rem 0;
+      margin-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.2rem;
+    }
+
+    .footer-links a {
+      color: #64748b;
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: #0f172a;
+    }
+
+    @media (max-width: 900px) {
+      .hero, .why-grid, .contact-grid {
+        grid-template-columns: 1fr;
+      }
+      .services-grid, .case-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .hero-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .nav-links {
+        display: none;
+      }
+      .nav-cta .btn-outline {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .services-grid, .case-grid, .hero-grid, .why-points {
+        grid-template-columns: 1fr;
+      }
+      .hero {
+        padding-top: 1.5rem;
+      }
+      .page {
+        padding: 0 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <!-- nav -->
+  <nav class="nav">
+    <div class="brand">
+      <div class="brand-mark">RT</div>
+      <div class="brand-text">
+        <h1>REVISE TECH LTD</h1>
+        <span>Invest in tomorrow’s technology, today</span>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="#portfolio">Portfolio</a>
+      <a href="#why">Why invest</a>
+      <a href="#services">Services</a>
+      <a href="#cases">Case studies</a>
+      <a href="#contact">Investor call</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-outline">Investor enquiry</a>
+      <a href="#contact" class="btn btn-primary">Book investor call →</a>
+    </div>
+  </nav>
+
+  <!-- hero -->
+  <section class="hero">
+    <div>
+      <div class="hero-kicker">
+        <span class="pill-soft"><span></span> 10 live products · UK-registered</span>
+        <span style="font-size:0.75rem; color:#64748b;">AI · SaaS · Fintech · Emerging Tech</span>
+      </div>
+      <h2 class="hero-title">Back the next generation of <span>intelligent technology</span>.</h2>
+      <p class="hero-sub">Revise Tech Ltd is building and scaling a portfolio of ten production-stage AI, fintech, and SaaS products—all engineered in the UK and designed for global markets.</p>
+      <div class="hero-metrics">
+        <span class="metric"><strong>10</strong> active projects</span>
+        <span class="metric"><strong>5+</strong> AI-native products</span>
+        <span class="metric"><strong>UK</strong> registered & regulated</span>
+      </div>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Schedule investor call →</a>
+        <a href="#portfolio" class="btn btn-outline">View investment portfolio</a>
+      </div>
+      <p class="hero-note"><strong>Early-stage advantage:</strong> secure preferential terms before portfolio-wide traction drives valuations upward.</p>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-header">
+        <div>
+          <span class="hero-chip">Active investment opportunity</span>
+          <p class="hero-tagline">Ten products. One vision. Exceptional returns.</p>
+        </div>
+        <div style="text-align:right;font-size:0.7rem;color:#64748b;">UK-based team<br /><span style="color:#334155;">Enterprise-grade engineering</span></div>
+      </div>
+      <div class="hero-grid">
+        <div class="mini-card"><h4>EduAI · EdTech</h4>Intelligent personalised learning for schools, universities, and corporate training.<span>Active development · Global market</span></div>
+        <div class="mini-card"><h4>Inkwell AI · Content</h4>AI writing assistant with brand-voice intelligence for creators and marketers.<span>Live beta · B2C & B2B</span></div>
+        <div class="mini-card"><h4>Pulserop · Fintech</h4>Cumulative pay-per-click earnings engine with intelligent monetisation.<span>Revenue generating</span></div>
+        <div class="mini-card"><h4>StoryVerse · Creative</h4>AI-driven storytelling and interactive fiction platform.<span>In development</span></div>
+      </div>
+      <div class="hero-card-footer">
+        <span class="hero-pill"><strong>Portfolio focus:</strong> AI, SaaS, fintech, AgriTech, document intelligence.</span>
+        <a href="#portfolio" class="btn btn-outline" style="padding:0.2rem 1rem; font-size:0.7rem;">Explore all 10</a>
+      </div>
+      <div class="hero-floating">
+        <strong>Investor discovery call</strong>
+        <span>Speak directly with the Revise Tech leadership team—review projects, pipeline, and investment terms.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- portfolio -->
+  <section id="portfolio">
+    <div class="section-header">
+      <div>
+        <div class="section-kicker">Investment portfolio</div>
+        <h3 class="section-title">Ten live products across high-growth digital sectors.</h3>
+      </div>
+      <p class="section-sub">Each product is live or in active development, positioned in multi-billion-pound verticals with clear paths to scale and monetisation.</p>
+    </div>
+    <div class="portfolio-grid" id="projectGrid"></div>
+  </section>
+
+  <!-- why invest -->
+  <section id="why">
+    <div class="section-header">
+      <div>
+        <div class="section-kicker">Why invest</div>
+        <h3 class="section-title">A diversified, AI-first portfolio with UK governance.</h3>
+      </div>
+      <p class="section-sub">Revise Tech combines proven execution with regulatory clarity and a portfolio engineered for scalability across multiple high-growth sectors.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-points">
+        <div class="why-card"><div class="why-icon">🚀</div><h4>Proven execution</h4><p>Ten products actively in development or live—demonstrating the team’s ability to build, ship, and iterate at pace.</p></div>
+        <div class="why-card"><div class="why-icon">🤖</div><h4>AI-first portfolio</h4><p>Over half of the portfolio is AI-native, positioning Revise Tech in the highest-growth segment of global tech.</p></div>
+        <div class="why-card"><div class="why-icon">🌍</div><h4>Diverse market reach</h4><p>Exposure to EdTech, AgriTech, Fintech, SaaS, and document intelligence—each a multi-billion-pound opportunity.</p></div>
+        <div class="why-card"><div class="why-icon">🏛️</div><h4>UK-registered & regulated</h4><p>Fully registered UK company with transparent governance, giving investors confidence and legal clarity.</p></div>
+      </div>
+      <aside class="why-aside">
+        <h3>Strategic partnership, not just capital.</h3>
+        <p>Revise Tech welcomes investors who bring more than funding—industry expertise, networks, and domain insight are especially valued.</p>
+        <ul>
+          <li>Preferential terms for early-stage investors.</li>
+          <li>Direct access to leadership for roadmap and governance discussions.</li>
+          <li>Clear reporting on product milestones and portfolio performance.</li>
+          <li>Co-creation opportunities on new AI and SaaS initiatives.</li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <!-- services -->
+  <section id="services">
+    <div class="section-header">
+      <div>
+        <div class="section-kicker">Premium services</div>
+        <h3 class="section-title">Enterprise-grade technology services that scale with you.</h3>
+      </div>
+      <p class="section-sub">Beyond the investment portfolio, Revise Tech delivers end-to-end engineering, consultancy, and IT supply for organisations that need reliable, modern infrastructure.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card"><div class="service-chip"><span></span> Software engineering</div><h3>Web apps, SaaS platforms & AI agents</h3><p>Modern stacks (React, Python, Node.js, Go) built for performance, security, and long-term maintainability.</p><ul class="service-list"><li>Custom SaaS platforms and APIs</li><li>AI agents and automation workflows</li><li>Scalable, cloud-native architectures</li></ul></div>
+      <div class="service-card"><div class="service-chip"><span></span> Tech consultancy</div><h3>Cloud, DevOps & architecture</h3><p>Strategic guidance to reduce complexity and cost while improving reliability and deployment velocity.</p><ul class="service-list"><li>AWS & Azure cloud strategy</li><li>DevOps automation & CI/CD</li><li>System architecture reviews</li></ul></div>
+      <div class="service-card"><div class="service-chip"><span></span> IT supply & hardware</div><h3>End-to-end infrastructure</h3><p>From servers and networking to workstations and lifecycle management, delivered with enterprise reliability.</p><ul class="service-list"><li>Server & network provisioning</li><li>Secure endpoint deployment</li><li>Lifecycle & procurement support</li></ul></div>
+    </div>
+  </section>
+
+  <!-- case studies -->
+  <section id="cases">
+    <div class="section-header">
+      <div><div class="section-kicker">Proven impact</div><h3 class="section-title">Real-world outcomes that de-risk your investment.</h3></div>
+      <p class="section-sub">Case studies that demonstrate Revise Tech’s ability to deliver measurable results for startups and enterprises.</p>
+    </div>
+    <div class="case-grid">
+      <div class="case-card"><div class="case-metric">+340% efficiency</div><div class="case-label">Startup hypergrowth</div><p>Scaled a fintech startup from 0 → 12k active users in 6 months using cloud-native architecture and CI/CD pipelines.</p></div>
+      <div class="case-card"><div class="case-metric">70% faster</div><div class="case-label">Automation & DevOps</div><p>Reduced deployment time by 70% and cut cloud costs by 32% with Kubernetes, Terraform, and serverless workflows.</p></div>
+      <div class="case-card"><div class="case-metric">400+ employees</div><div class="case-label">Enterprise infrastructure</div><p>Delivered full IT setup for a 400+ employee enterprise, including zero-downtime migration and cybersecurity hardening.</p></div>
+    </div>
+  </section>
+
+  <!-- contact -->
+  <section id="contact">
+    <div class="section-header">
+      <div><div class="section-kicker">Investor call</div><h3 class="section-title">Start a conversation about co-owning the future.</h3></div>
+      <p class="section-sub">Share a few details and an investment lead from Revise Tech will respond within 24 hours to arrange a call.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <h3>Book a free investor discovery call</h3>
+        <p>Explore our projects, pipeline, and investment terms at your convenience. No obligation—just a clear view of how Revise Tech is building the next wave of intelligent products.</p>
+        <form class="contact-form" action="contact.php" method="POST">
+          <div class="field"><label for="name">Full name</label><input id="name" name="name" type="text" placeholder="Jane Doe" /></div>
+          <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" placeholder="you@example.com" /></div>
+          <div class="field"><label for="org">Organisation / Fund</label><input id="org" name="org" type="text" placeholder="Your firm or organisation" /></div>
+          <div class="field"><label for="ticket">Indicative ticket size</label><input id="ticket" name="ticket" type="text" placeholder="e.g. £50k – £500k" /></div>
+          <div class="field"><label for="message">What would you like to discuss?</label><textarea id="message" name="message" rows="4" placeholder="Share your focus areas, timelines, or any questions you’d like us to prepare for."></textarea></div>
+          <button type="submit" class="btn btn-primary" style="margin-top:0.2rem;">Send investment enquiry →</button>
+        </form>
+        <p class="contact-meta">Prefer email? Contact us directly at <a href="mailto:alexander@revise-tech.co.uk">alexander@revise-tech.co.uk</a>.</p>
+      </div>
+      <aside class="contact-aside">
+        <div><strong>What you can expect</strong><div class="contact-chips"><span class="contact-chip">Portfolio walkthrough</span><span class="contact-chip">Product deep dives</span><span class="contact-chip">Term structure overview</span><span class="contact-chip">Q&A with leadership</span></div></div>
+        <div><strong>Channels</strong><p>Connect via LinkedIn, X / Twitter, or WhatsApp—or schedule directly into your calendar after our first call.</p></div>
+        <div><strong>Alignment</strong><p>We’re especially interested in investors with experience in AI, SaaS, fintech, or regulated industries who want to shape the next decade of intelligent products.</p></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer>
+    <span>© 2026 Revise Tech Ltd — All trademarks and IP belong to their respective owners.</span>
+    <div class="footer-links">
+      <a href="#portfolio">Portfolio</a>
+      <a href="#why">Why invest</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Investor call</a>
+    </div>
+  </footer>
+</div>
+
+<!-- JavaScript: dynamic portfolio -->
+<script>
+  (function() {
+    const projects = [
+      { category: 'AI · EdTech', title: 'EduAI · Intelligent Learning Platform', desc: 'Real-time adaptive curricula for schools, universities, and corporate training—reimagining how learners and educators engage with content.', status: 'Active development · Global education market', tags: ['AI-native', 'High scalability'] },
+      { category: 'AI · Content', title: 'Inkwell AI · Writing & Content Engine', desc: 'Deep language models fused with brand-voice intelligence for creators, marketers, and teams needing high-fidelity content.', status: 'Live beta · B2C & B2B', tags: ['Subscription & enterprise', 'Content & marketing'] },
+      { category: 'Fintech · Adtech', title: 'Pulserop · Pay-Per-Click Earnings', desc: 'Cumulative PPC earnings engine with intelligent monetisation tools, real-time analytics, and transparent payout infrastructure.', status: 'Revenue generating · Cumulative model', tags: ['Publishers & affiliates', 'Fintech'] },
+      { category: 'AI · Creative', title: 'StoryVerse · Interactive Storytelling', desc: 'Immersive AI-driven storytelling where users co-create narratives, worlds, and characters for entertainment and gaming.', status: 'In development · Entertainment tech', tags: ['Creator economy', 'Entertainment'], link: 'https://storyverse-liard.vercel.app/' },
+      { category: 'SaaS · No-code', title: 'Aleyo · Website Builder', desc: 'No-code/low-code website builder with AI-assisted design and copywriting for non-technical entrepreneurs and SMEs.', status: 'MVP live · SME market', tags: ['Recurring SaaS revenue', 'Web & SME'], link: 'https://aleyo.vercel.app/' },
+      { category: 'OCR · Fintech', title: 'Cheque Processor using OCR', desc: 'Enterprise-grade OCR that automates extraction, verification, and processing of physical cheque data for banks.', status: 'Pilot stage · Financial sector', tags: ['Operational cost reduction', 'Banking'] },
+      { category: 'AgriTech · AI', title: 'Drone Camera Biomass Prediction', desc: 'AI-powered drone imaging that predicts crop biomass, health, and yield for data-driven agricultural decisions.', status: 'Field trials · AgriTech', tags: ['Precision agriculture', 'AgriTech'] },
+      { category: 'SaaS · Operations', title: 'Inventory Studio', desc: 'Smart inventory management with AI-driven demand forecasting, multi-warehouse sync, and supplier intelligence.', status: 'Beta users · Supply chain', tags: ['Retail & distribution', 'Operations'] },
+      { category: 'AI · Document Processing', title: 'Intelligent Document Processor', desc: 'Advanced NLP and OCR to extract, classify, and process complex documents at scale for legal, insurance, and healthcare.', status: 'Enterprise ready · Compliance-focused', tags: ['Reduced manual review', 'Legal & healthcare'] },
+      { category: 'AI · Productivity', title: 'AI Kanban · Intelligent Project Board', desc: 'Smart AI-powered Kanban board with automated task prioritisation, intelligent suggestions, and real-time project intelligence.', status: 'Live · Productivity & project management', tags: ['Teams & enterprise', 'SaaS · AI'], link: 'https://smart-kanban-ashen.vercel.app/' }
+    ];
+
+    const grid = document.getElementById('projectGrid');
+    if (grid) {
+      grid.innerHTML = projects.map(p => `
+        <article class="project-card">
+          <div class="project-pill"><span></span> ${p.category}</div>
+          <h3>${p.title}</h3>
+          <p class="project-meta">${p.desc}</p>
+          <p class="project-status">${p.status}</p>
+          ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="project-link">Visit project →</a>` : ''}
+          <div class="project-footer"><span>${p.tags[0] || ''}</span><span>${p.tags[1] || ''}</span></div>
+        </article>
+      `).join('');
+    }
+  })();
+</script>
+
+<!-- contact.php backend simulation (dummy) -->
+<!-- In production, replace with real PHP backend. For demo, we include a simple note -->
+</body>
+</html>
