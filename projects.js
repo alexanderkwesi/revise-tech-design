@@ -52,7 +52,7 @@
       desc: "Enterprise-grade OCR that automates extraction, verification, and processing of physical cheque data for banks.",
       status: "Pilot stage · Financial sector",
       tags: ["Operational cost reduction", "Banking"],
-      link: "https://cheque-front-end-eight.vercel.app/home"
+      link: "https://cheque-front-end-eight.vercel.app"
     },
     {
       category: "AgriTech · AI",
