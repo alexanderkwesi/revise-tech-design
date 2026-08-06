@@ -20,12 +20,13 @@
       link: "https://inkwell-ten-beige.vercel.app/"
     },
     {
-      category: "Fintech · Adtech",
-      filterCategory: "fintech",
-      title: "Pulserop · Pay-Per-Click Earnings",
-      desc: "Cumulative PPC earnings engine with intelligent monetisation tools, real-time analytics, and transparent payout infrastructure.",
-      status: "Revenue generating · Cumulative model",
-      tags: ["Publishers & affiliates", "Fintech"]
+      category: "Edutech · Jobtech",
+      filterCategory: "edutech",
+      title: "Internship Finder - for students and undergraduates",
+      desc: "Connecting ambitious students with premium internships at world-leading firms in London, Berlin, Singapore and beyond.",
+      status: "Live Internships for students and undergraduates",
+      tags: ["Internship Jobs", "Jobtech"],
+      link: "https://career-compass-ukie.lovable.app"
     },
     {
       category: "AI · Creative",
