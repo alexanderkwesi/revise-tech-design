@@ -80,7 +80,7 @@
       desc: "Advanced NLP and OCR to extract, classify, and process complex documents at scale for legal, insurance, and healthcare.",
       status: "Enterprise ready · Compliance-focused",
       tags: ["Reduced manual review", "Legal & healthcare"],
-      link: "https://docu-craft-intelligence.lovable.app"
+      link: "https://idp-abkf.vercel.app/"
     },
     {
       category: "AI · Productivity",
