@@ -4,7 +4,7 @@
     {
       category: "AI · EdTech",
       filterCategory: "ai",
-      title: "Learn AI · Intelligent Learning Platform",
+      title: "Learners AI · Intelligent Learning Platform",
       desc: "Real-time adaptive curricula for schools, universities, and corporate training—reimagining how learners and educators engage with content.",
       status: "Active development · Global education market",
       tags: ["AI-native", "High scalability"],
