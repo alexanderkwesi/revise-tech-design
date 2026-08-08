@@ -71,7 +71,7 @@
       desc: "Smart inventory management with AI-driven demand forecasting, multi-warehouse sync, and supplier intelligence.",
       status: "Beta users · Supply chain",
       tags: ["Retail & distribution", "Operations"],
-      link: "https://its-rose.vercel.app/"
+      link: "https://stockhouse-start.lovable.app"
     },
     {
       category: "AI · Document Processing",
