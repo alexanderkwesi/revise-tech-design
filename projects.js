@@ -44,7 +44,7 @@
       desc: "No-code/low-code website builder with AI-assisted design and copywriting for non-technical entrepreneurs and SMEs.",
       status: "MVP live · SME market",
       tags: ["Recurring SaaS revenue", "Web & SME"],
-      link: "https://build-and-design-art.lovable.app"
+      link: "https://agent-team-studio.lovable.app"
     },
     {
       category: "OCR · Fintech",
