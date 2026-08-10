@@ -8,7 +8,7 @@
       desc: "Real-time adaptive curricula for schools, universities, and corporate training—reimagining how learners and educators engage with content.",
       status: "Active development · Global education market",
       tags: ["AI-native", "High scalability"],
-      link: "https://eduai-9hvo.vercel.app"
+      link: "https://try-pay-learn.lovable.app"
     },
     {
       category: "AI · Content",
