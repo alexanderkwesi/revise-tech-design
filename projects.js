@@ -335,7 +335,7 @@
   }
 
   function closeDonationModal() {
-    document.getElementById('#closeDonationModal').style.display = "none";
+    document.querySelector('.modal-close').style.display = "none";
     document.body.style.overflow = '';
   }
 
