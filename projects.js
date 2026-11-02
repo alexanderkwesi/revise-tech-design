@@ -298,12 +298,13 @@
     return donationCurrency;
   }
 
-
+  const amount = getDonationAmount();
+  const curr = getDonationCurrency();
   
   function openDonationModal(projectIndex) {
-    const amount = getDonationAmount();
-    const curr = getDonationCurrency();
+    
     const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
+    
     activeProject = projects[projectIndex];
     if (!activeProject) return;
 
