@@ -357,7 +357,7 @@
     }).render("#paypal-button-container");
   })
   .catch((err) => console.error("Failed to load PayPal SDK:", err));
-  renderPayPalButtons();
+ 
   const btn = document.getElementById('simulatedPaypalBtn');
   btn.textContent = "Processing Transaction...";
   btn.disabled = true;
@@ -367,11 +367,7 @@
   triggerDonationSuccess();
   }, 1000);
 
-  }
-
-
   
-  function renderPayPalButtons() {
     const container = document.getElementById('paypal-button-container');
     if (!container) return;
 
