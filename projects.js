@@ -116,9 +116,7 @@
   let donationAmount = 10;
   let donationCurrency = 'GBP';
 
-  const amount = getDonationAmount();
-  const curr = getDonationCurrency();
-  const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
+
 
   // Render projects function
   function renderProjects(filter = 'all') {
@@ -300,6 +298,10 @@
     return donationCurrency;
   }
 
+  const amount = getDonationAmount();
+  const curr = getDonationCurrency();
+  const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
+  
   function openDonationModal(projectIndex) {
     activeProject = projects[projectIndex];
     if (!activeProject) return;
