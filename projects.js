@@ -335,7 +335,7 @@
   }
 
   function closeDonationModal() {
-    document.getElementById('donationModal').classList.remove('active');
+    document.getElementById('closeDonationModal').classList.remove('active');
     document.body.style.overflow = '';
   }
 
