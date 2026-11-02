@@ -547,6 +547,7 @@
   // Dom ready initialization
   document.addEventListener('DOMContentLoaded', () => {
     renderProjects('all');
+    renderButtonForPayPal();
     initFilters();
     initCounters();
     initMobileNav();
