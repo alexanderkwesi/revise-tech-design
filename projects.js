@@ -520,7 +520,7 @@
         donationCurrency = this.value;
         const symbol = currencySymbols[donationCurrency] || '£';
         document.getElementById('modalCurrencySymbol').textContent = symbol;
-        renderPayPalButtons();
+         renderButtonForPayPal(clientId, curr, amount.toFived(2));
       });
     }
   }
