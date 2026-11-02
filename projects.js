@@ -350,6 +350,16 @@
   })
   .catch((err) => console.error("Failed to load PayPal SDK:", err));
 
+  const btn = document.getElementById('simulatedPaypalBtn');
+  btn.textContent = "Processing Transaction...";
+  btn.disabled = true;
+  btn.style.opacity = '0.7';
+
+  setTimeout(() => {
+  triggerDonationSuccess();
+  }, 1000);
+  });
+
   }
 
 
@@ -438,31 +448,6 @@
     document.head.appendChild(script);
   }
 
-  function renderMockPayPalButton() {
-    const container = document.getElementById('paypal-button-container');
-    if (!container) return;
-
-    container.innerHTML = `
-      <button id="simulatedPaypalBtn" class="project-card-donate-btn" style="width:100%; justify-content:center; padding:0.9rem; font-weight:700; margin: 0.5rem 0;">
-        Simulate PayPal Checkout →
-      </button>
-      <p style="font-size:0.7rem; font-weight:700; text-transform:uppercase; text-align:center; color:#71717a; margin-top:0.4rem;">
-        Checkout active (payment will be billed).
-      </p>
-    `;
-
-    document.getElementById('simulatedPaypalBtn').addEventListener('click', () => {
-      const btn = document.getElementById('simulatedPaypalBtn');
-      btn.textContent = "Processing Transaction...";
-      btn.disabled = true;
-      btn.style.opacity = '0.7';
-
-      setTimeout(() => {
-        triggerDonationSuccess();
-      }, 1000);
-    });
-  }
-
   function triggerDonationSuccess() {
     const successScreen = document.getElementById('modalSuccessScreen');
     const successProjectName = document.getElementById('successProjectName');
@@ -547,7 +532,6 @@
   // Dom ready initialization
   document.addEventListener('DOMContentLoaded', () => {
     renderProjects('all');
-    renderButtonForPayPal();
     initFilters();
     initCounters();
     initMobileNav();
