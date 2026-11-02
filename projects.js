@@ -358,7 +358,6 @@
   setTimeout(() => {
   triggerDonationSuccess();
   }, 1000);
-  });
 
   }
 
