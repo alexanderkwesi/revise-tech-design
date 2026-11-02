@@ -343,12 +343,12 @@
   const curr = getDonationCurrency();
   const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
 
-  function renderButtonForPayPal(clientId, currency, value) {
-  window.paypalLoadScript({ clientId: clientId, currency: currency, value:value })
+  function renderButtonForPayPal(clientId, curr, amount) {
+  window.paypalLoadScript({ clientId: clientId, currency: curr, value:amount })
   .then((paypal) => {
     return paypal.Buttons({
       createOrder: (data, actions) =>
-        actions.order.create({ purchase_units: [{ amount: { value:value } }] }),
+        actions.order.create({ purchase_units: [{ amount: { value:amount } }] }),
       onApprove: (data, actions) =>
         actions.order.capture().then((details) => {
           console.log("Transaction completed by", details.payer.name.given_name);
