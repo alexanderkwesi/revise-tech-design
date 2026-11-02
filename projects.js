@@ -331,6 +331,10 @@
     document.body.style.overflow = '';
   }
 
+  const amount = getDonationAmount();
+  const curr = getDonationCurrency();
+  const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
+
   function renderButtonForPayPal(clientId, currency, value) {
   window.paypalLoadScript({ clientId: clientId, currency: currency, value:value })
   .then((paypal) => {
@@ -377,9 +381,9 @@
     script.src = `https://www.paypal.com/sdk/js?client-id=BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE&currency=${currency}&disable-funding=credit,card`;
     script.async = true;
 
-    const amount_1 = getDonationAmount();
-    const curr_1 = getDonationCurrency();
-    const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
+    //const amount_1 = getDonationAmount();
+    //const curr_1 = getDonationCurrency();
+    //const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
 
     script.onload = function() {
       container.innerHTML = '';
