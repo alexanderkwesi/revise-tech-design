@@ -337,7 +337,7 @@
   function closeDonationModal() {
     //document.getElementById('closeDonationModal').classList.remove('active');
     //document.body.style.overflow = '';
-    document.querySelector('modal-class').style.display = "hidden";
+    document.getElementById('closeDonationModal').style.display = "hidden";
     document.body.style.overflow = '';
   }
 
