@@ -298,11 +298,11 @@
     return donationCurrency;
   }
 
-  const amount = getDonationAmount();
-  const curr = getDonationCurrency();
+
   
   function openDonationModal(projectIndex) {
-    
+    const amount = getDonationAmount();
+    const curr = getDonationCurrency();
     const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
     
     activeProject = projects[projectIndex];
@@ -357,7 +357,7 @@
     }).render("#paypal-button-container");
   })
   .catch((err) => console.error("Failed to load PayPal SDK:", err));
-
+  renderPayPalButtons();
   const btn = document.getElementById('simulatedPaypalBtn');
   btn.textContent = "Processing Transaction...";
   btn.disabled = true;
