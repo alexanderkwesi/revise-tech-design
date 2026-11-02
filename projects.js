@@ -374,7 +374,8 @@
 
     const script = document.createElement('script');
     script.id = scriptId;
-    script.src = `https://www.paypal.com/sdk/js?client-id=BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE&currency=${currency}&disable-funding=credit,card`;
+    //script.src = `https://www.paypal.com/sdk/js?client-id=BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE&currency=${currency}&disable-funding=credit,card`;
+    script.src= ``;
     script.async = true;
 
     const amount_1 = getDonationAmount();
@@ -416,19 +417,19 @@
           },
           onError: function(err) {
             console.warn("PayPal Smart Buttons error, falling back to simulated checkout flow:", err);
-            renderButtonForPayPal(clientId, curr1, amount1.toFived(2));
+            renderButtonForPayPal(clientId, curr, amount.toFived(2));
           }
         });
         paypalButtonsInstance.render('#paypal-button-container');
       } catch (err) {
         console.warn("Error rendering PayPal SDK buttons, rendering mock button:", err);
-        renderButtonForPayPal(clientId, curr1, amount1.toFived(2));
+        renderButtonForPayPal(clientId, curr, amount.toFived(2));
       }
     };
 
     script.onerror = function() {
       console.warn("Could not load PayPal SDK. Operating in Simulated Mock Checkout mode.");
-      renderButtonForPayPal(clientId, curr1, amount1.toFived(2));
+      renderButtonForPayPal(clientId, curr, amount.toFived(2));
     };
 
     document.head.appendChild(script);
