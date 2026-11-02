@@ -472,6 +472,7 @@
       modalOverlay.addEventListener('click', function(e) {
         if (e.target === this) {
           closeDonationModal();
+          renderButtonForPayPal(clientId, curr, amount.toFixed(2));
         }
       });
     }
