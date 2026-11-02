@@ -116,6 +116,10 @@
   let donationAmount = 10;
   let donationCurrency = 'GBP';
 
+  const amount = getDonationAmount();
+  const curr = getDonationCurrency();
+  const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
+
   // Render projects function
   function renderProjects(filter = 'all') {
     const grid = document.getElementById('projectGrid');
@@ -323,7 +327,7 @@
     document.getElementById('donationModal').classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    renderPayPalButtons();
+    renderButtonForPayPal(clientId, curr, amount.toFixed(2));
   }
 
   function closeDonationModal() {
@@ -331,9 +335,7 @@
     document.body.style.overflow = '';
   }
 
-  const amount = getDonationAmount();
-  const curr = getDonationCurrency();
-  const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
+
 
   function renderButtonForPayPal(clientId, currency, value) {
   window.paypalLoadScript({ clientId: clientId, currency: currency, value:value })
