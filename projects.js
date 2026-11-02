@@ -453,7 +453,11 @@
 
   // Dom ready initialization
   document.addEventListener('DOMContentLoaded', () => {
+    const amount = getDonationAmount();
+    const curr = getDonationCurrency();
+    const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
     renderProjects('all');
+    renderButtonForPayPal(clientId, curr, amount.toFixed(2)); 
     initFilters();
     initCounters();
     initMobileNav();
