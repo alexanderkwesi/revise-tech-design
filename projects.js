@@ -331,6 +331,25 @@
     document.body.style.overflow = '';
   }
 
+  function renderButtonForPayPal(clientId, currency, value) {
+  window.paypalLoadScript({ clientId: clientId, currency: currency, value:value })
+  .then((paypal) => {
+    return paypal.Buttons({
+      createOrder: (data, actions) =>
+        actions.order.create({ purchase_units: [{ amount: { value:value } }] }),
+      onApprove: (data, actions) =>
+        actions.order.capture().then((details) => {
+          console.log("Transaction completed by", details.payer.name.given_name);
+        }),
+      onError: (err) => console.error("PayPal error:", err),
+    }).render("#paypal-button-container");
+  })
+  .catch((err) => console.error("Failed to load PayPal SDK:", err));
+
+  }
+
+
+  
   function renderPayPalButtons() {
     const container = document.getElementById('paypal-button-container');
     if (!container) return;
@@ -358,10 +377,14 @@
     script.src = `https://www.paypal.com/sdk/js?client-id=BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE&currency=${currency}&disable-funding=credit,card`;
     script.async = true;
 
+    const amount_1 = getDonationAmount();
+    const curr_1 = getDonationCurrency();
+    const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
+
     script.onload = function() {
       container.innerHTML = '';
       if (!window.paypal) {
-        renderMockPayPalButton();
+        renderButtonForPayPal(clientId, curr_1, amount_1.toFived(2));
         return;
       }
 
@@ -393,19 +416,19 @@
           },
           onError: function(err) {
             console.warn("PayPal Smart Buttons error, falling back to simulated checkout flow:", err);
-            renderMockPayPalButton();
+            renderButtonForPayPal(clientId, curr1, amount1.toFived(2));
           }
         });
         paypalButtonsInstance.render('#paypal-button-container');
       } catch (err) {
         console.warn("Error rendering PayPal SDK buttons, rendering mock button:", err);
-        renderMockPayPalButton();
+        renderButtonForPayPal(clientId, curr1, amount1.toFived(2));
       }
     };
 
     script.onerror = function() {
       console.warn("Could not load PayPal SDK. Operating in Simulated Mock Checkout mode.");
-      renderMockPayPalButton();
+      renderButtonForPayPal(clientId, curr1, amount1.toFived(2));
     };
 
     document.head.appendChild(script);
@@ -420,7 +443,7 @@
         Simulate PayPal Checkout →
       </button>
       <p style="font-size:0.7rem; font-weight:700; text-transform:uppercase; text-align:center; color:#71717a; margin-top:0.4rem;">
-        Simulated checkout active (payment will not be billed).
+        Checkout active (payment will be billed).
       </p>
     `;
 
