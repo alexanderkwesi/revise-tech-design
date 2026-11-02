@@ -298,11 +298,12 @@
     return donationCurrency;
   }
 
-  const amount = getDonationAmount();
-  const curr = getDonationCurrency();
-  const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
+
   
   function openDonationModal(projectIndex) {
+    const amount = getDonationAmount();
+    const curr = getDonationCurrency();
+    const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
     activeProject = projects[projectIndex];
     if (!activeProject) return;
 
@@ -337,7 +338,9 @@
     document.body.style.overflow = '';
   }
 
-
+  const amount = getDonationAmount();
+  const curr = getDonationCurrency();
+  const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
 
   function renderButtonForPayPal(clientId, currency, value) {
   window.paypalLoadScript({ clientId: clientId, currency: currency, value:value })
