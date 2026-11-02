@@ -375,7 +375,7 @@
     const script = document.createElement('script');
     script.id = scriptId;
     //script.src = `https://www.paypal.com/sdk/js?client-id=BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE&currency=${currency}&disable-funding=credit,card`;
-    script.src= ``;
+    script.src= `https://unpkg.com/@paypal/paypal-js@9.4.0/dist/iife/paypal-js.min.js`;
     script.async = true;
 
     const amount_1 = getDonationAmount();
