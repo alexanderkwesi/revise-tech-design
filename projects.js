@@ -299,11 +299,11 @@
 
   // ---- PayPal SDK loader (singleton) ----
   function loadPayPalSDK(currency) {
-    if (window.paypal && window.__paypalLoadedCurrency === currency) {
+    if (window.paypal && window.__paypalLoadedCurrency === CURRENCY_SYMBOLS[donationCurrency]) {
       return Promise.resolve(window.paypal);
     }
 
-    if (paypalSDKPromise && window.__paypalLoadedCurrency === currency) {
+    if (paypalSDKPromise && window.__paypalLoadedCurrency === CURRENCY_SYMBOLS[donationCurrency]) {
       return paypalSDKPromise;
     }
 
@@ -414,7 +414,7 @@
     });
 
     updatePresetLabels();
-    renderPayPalButtons();
+    
 
     if (modal) modal.classList.add('active');
     document.body.style.overflow = 'hidden';
