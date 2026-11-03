@@ -635,6 +635,41 @@
     }
   }
 
+    // ============================================================
+  // BRAND FUNDING MODAL
+  // ============================================================
+  // Map data-brand values (from index.html) → projects[] titles
+  const BRAND_PROJECT_TITLES = {
+    "scourge":       "Scourge · High-Performance Data Storage",
+    "restoracin":    "Restoracin · Restorative Eyecare",
+    "radfrac-derma": "RadFrac Derma · Clinical Derma Brand"
+  };
+
+  function openBrandDonationModal(brandKey) {
+    const title = BRAND_PROJECT_TITLES[brandKey];
+    if (!title) {
+      console.warn('Unknown brand key for funding:', brandKey);
+      return;
+    }
+    const idx = projects.findIndex(p => p.title === title);
+    if (idx < 0) {
+      console.warn('Brand project not found in projects array:', title);
+      return;
+    }
+    openDonationModal(idx);
+  }
+
+  function initBrandFundButtons() {
+    const buttons = document.querySelectorAll('.brand-neo-block .project-card-donate-btn');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const brand = this.getAttribute('data-brand');
+        if (!brand) return;
+        openBrandDonationModal(brand);
+      });
+    });
+  }
+  
   // ============================================================
   // BRAND FUND BUTTONS
   // ============================================================
