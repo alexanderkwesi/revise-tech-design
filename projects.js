@@ -320,15 +320,14 @@
   // ---- PayPal button rendering ----
   function renderPayPalButtons() {
     const container = document.getElementById("paypal-button-container");
-    const curr = document.querySelector("presets-grid preset-button #currency");
+    
     if (!container) return;
 
     const modal = document.getElementById('donationModal');
     if (!modal || !modal.classList.contains('active')) return;
 
     const amount = formatAmount(getDonationAmount());
-    const currency = getDonationCurrency();
-    curr.innerHTML = currency;
+    
     container.innerHTML = "";
 
     loadPayPalSDK(currency)
@@ -479,6 +478,7 @@
         donationCurrency = this.value;
         const symbolEl = document.getElementById('modalCurrencySymbol');
         if (symbolEl) symbolEl.textContent = currencySymbols[donationCurrency] || '£';
+        const curr = document.querySelector("presets-grid preset-button #currency").textContext = donationCurrency;
         renderPayPalButtons();
       });
     }
