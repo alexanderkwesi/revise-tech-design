@@ -301,9 +301,7 @@
 
   
   function openDonationModal(projectIndex) {
-    const amount = getDonationAmount();
-    const curr = getDonationCurrency();
-    const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
+
     
     activeProject = projects[projectIndex];
     if (!activeProject) return;
@@ -331,6 +329,9 @@
     document.getElementById('donationModal').classList.add('active');
     document.body.style.overflow = 'hidden';
 
+        const amount = getDonationAmount();
+    const curr = getDonationCurrency();
+    const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
     renderButtonForPayPal(clientId, curr, amount.toFixed(2));
   }
 
