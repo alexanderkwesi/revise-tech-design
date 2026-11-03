@@ -534,7 +534,11 @@
         </div>
       </div>
     </footer>
-
+    <script>
+      document.querySelectionAll('project-actions').addEventListener('click', () => {
+      document.getElementById('donationModal').style.display = 'block';
+      });
+    </script>
     <script src="projects.js"></script>
   </body>
 </html>
