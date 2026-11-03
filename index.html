@@ -375,17 +375,28 @@
           <p id="modalProjectDesc">Directly back the development and launch of our incubating tech applications.</p>
         </div>
 
-        <div class="modal-body">
-          <!-- Preset Donation Tiers -->
-          <div class="donation-presets">
-            <label class="modal-label">Choose Contribution Tier</label>
-            <div class="presets-grid">
-              <button class="preset-btn active" type="button" data-amount="10">10</button>
-              <button class="preset-btn" type="button" data-amount="25">25</button>
-              <button class="preset-btn" type="button" data-amount="50">50</button>
-              <button class="preset-btn" type="button" data-amount="100">100</button>
-            </div>
-          </div>
+
+        <div class="donation-presets">
+        <label class="modal-label">Choose Contribution Tier</label>
+        <div class="presets-grid">
+          <button class="preset-btn active" type="button" data-amount="10">£10</button>
+          <button class="preset-btn" type="button" data-amount="25">£25</button>
+          <button class="preset-btn" type="button" data-amount="50">£50</button>
+          <button class="preset-btn" type="button" data-amount="100">£100</button>
+        </div>
+      </div>
+      <div class="custom-amount-row">
+        <div class="form-group">
+          <label for="donationCurrency" class="modal-label">Currency</label>
+          <select id="donationCurrency" class="form-select-glass">
+            <option value="GBP">GBP (£)</option>
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+          </select>
+        </div>
+      </div>
+              
+
 
           <!-- Custom Amount & Currency Input -->
           <div class="custom-amount-row">
