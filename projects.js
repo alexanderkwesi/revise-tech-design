@@ -401,7 +401,7 @@
     if (titleEl) titleEl.textContent = `Fund ${project.title}`;
     if (descEl) descEl.textContent = project.desc;
     if (symbolEl) symbolEl.textContent = '£';
-    if (curr) curr.textContent = symbolE1;
+    if (curr) curr.textContent = symbolE1.textContext;
     if (customAmountEl) customAmountEl.value = '';
     if (backerNameEl) backerNameEl.value = '';
     if (backerMessageEl) backerMessageEl.value = '';
@@ -521,6 +521,7 @@
     initMobileNav();
     initDonationModalListeners();
     focusGoogleForm();
+    updatePresetLabels();
   });
 
   window.addEventListener('hashchange', () => {
