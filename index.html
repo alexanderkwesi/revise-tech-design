@@ -8,14 +8,9 @@
     <title>Revise Tech Ltd | Invest in Tomorrow’s Technology, Today</title>
     <meta name="description" content="Revise Tech Ltd is building and scaling a portfolio of ten production-stage AI, fintech, and SaaS products. Redesigned with a premium neo-brutalist aesthetic." />
     <link rel="stylesheet" href="index.css">
-    <!--<script src="https://unpkg.com/@paypal/paypal-js@9.4.0/dist/iife/paypal-js.min.js"></script> 
-    <script src="https://cdn.jsdelivr.net/npm/@paypal/paypal-js@11.3.0/index.min.js"></script>-->
-   
-   
+    <!-- PayPal SDK is loaded dynamically by projects.js — do not add <script> tags here -->
   </head>
   <body>
-    <div id="root"></div>
-
     <!-- Sticky Navbar -->
     <nav class="navbar neo-border">
       <div class="container nav-container">
@@ -26,7 +21,7 @@
             <p>UK Venture Builder &amp; Incubator</p>
           </div>
         </a>
-        
+
         <ul class="nav-menu">
           <li class="nav-item"><a href="#portfolio" class="nav-link">Portfolio</a></li>
           <li class="nav-item"><a href="#why" class="nav-link">Why Invest</a></li>
@@ -39,7 +34,7 @@
           <a href="#contact" class="neo-btn neo-btn-accent">Book Call →</a>
         </div>
 
-        <button class="nav-toggle" aria-label="Toggle Navigation">
+        <button class="nav-toggle" type="button" aria-label="Toggle Navigation">
           <span></span>
           <span></span>
           <span></span>
@@ -63,13 +58,13 @@
       <div class="container hero-grid-layout">
         <div>
           <div class="hero-tag"><span></span> 12 active projects · UK-based</div>
-          
+
           <h2 class="hero-title-text">
-            Back the next generation of 
-            <span class="highlight-blue">intelligent</span> 
+            Back the next generation of
+            <span class="highlight-blue">intelligent</span>
             technology<span class="highlight-red">.</span>
           </h2>
-          
+
           <p class="hero-description">
             Revise Tech Ltd builds and scales a portfolio of production-stage AI, fintech, and SaaS products. Engineered in the UK and built for global scale.
           </p>
@@ -142,11 +137,11 @@
 
       <!-- Interactive Filters -->
       <div class="filter-bar">
-        <button class="filter-btn active" data-filter="all">All Projects</button>
-        <button class="filter-btn" data-filter="ai">AI-Native</button>
-        <button class="filter-btn" data-filter="saas">SaaS &amp; Operations</button>
-        <button class="filter-btn" data-filter="fintech">Fintech &amp; Adtech</button>
-        <button class="filter-btn" data-filter="emerging">AgriTech &amp; Emerging</button>
+        <button class="filter-btn active" type="button" data-filter="all">All Projects</button>
+        <button class="filter-btn" type="button" data-filter="ai">AI-Native</button>
+        <button class="filter-btn" type="button" data-filter="saas">SaaS &amp; Operations</button>
+        <button class="filter-btn" type="button" data-filter="fintech">Fintech &amp; Adtech</button>
+        <button class="filter-btn" type="button" data-filter="emerging">AgriTech &amp; Emerging</button>
       </div>
 
       <!-- Projects Grid Container -->
@@ -222,7 +217,6 @@
         </div>
 
         <div class="services-grid-layout">
-          <!-- Service Card 1 -->
           <div class="service-neo-card">
             <span class="service-badge">Software Engineering</span>
             <h3>Web Apps, SaaS &amp; Agents</h3>
@@ -234,7 +228,6 @@
             </ul>
           </div>
 
-          <!-- Service Card 2 -->
           <div class="service-neo-card">
             <span class="service-badge">Tech Consultancy</span>
             <h3>Cloud, DevOps &amp; Strategy</h3>
@@ -246,7 +239,6 @@
             </ul>
           </div>
 
-          <!-- Service Card 3 -->
           <div class="service-neo-card">
             <span class="service-badge">IT Supply</span>
             <h3>Infrastructure Procurement</h3>
@@ -275,21 +267,18 @@
         </div>
 
         <div class="cases-grid-layout">
-          <!-- Case 1 -->
           <div class="case-neo-card">
             <div class="case-stat" data-target="340" data-prefix="+" data-suffix="%">+0%</div>
             <div class="case-tagline">Efficiency / Startup Hypergrowth</div>
             <p>Scaled a fintech company's system capacity from 0 to 12,000 active users in 6 months utilizing AWS serverless pipelines.</p>
           </div>
 
-          <!-- Case 2 -->
           <div class="case-neo-card">
             <div class="case-stat" data-target="70" data-suffix="%">0%</div>
             <div class="case-tagline">Faster / Automation &amp; DevOps</div>
             <p>Decreased time-to-deployment by 70% and reduced cloud hosting costs by 32% with customized Terraform and Kubernetes systems.</p>
           </div>
 
-          <!-- Case 3 -->
           <div class="case-neo-card">
             <div class="case-stat" data-target="400" data-suffix="+">0</div>
             <div class="case-tagline">Endpoints / Enterprise Rollout</div>
@@ -317,11 +306,25 @@
           <div class="contact-card-box" style="padding: 2.5rem;">
             <h3>Schedule an Investor Call</h3>
             <p style="margin-bottom: 1.5rem;">Explore our projects, technical roadmap, and investment parameters at your convenience.</p>
-            
-            <!-- Google Forms Responsive Embed Container -->
-            <!-- Swap 'YOUR_GOOGLE_FORM_ID' with your real Google Form ID (e.g. 1FAIpQLS...) -->
+
+            <!--
+              Google Forms embed:
+              Short link  https://forms.gle/pxE3fj1o9LTeP1Sw5  CANNOT be embedded.
+              Replace YOUR_FORM_ID below with the long /d/e/1FAIpQLS... id from the form's
+              "Send > Embed" tab, keeping the viewform?embedded=true suffix.
+            -->
             <div class="google-form-container" style="width: 100%; height: 600px; border: 2.5px solid var(--border-color); box-shadow: 4px 4px 0px #000000; margin-bottom: 1.5rem; overflow: hidden; background: var(--color-white);">
-              <iframe id="google-form-iframe" src="https://forms.gle/pxE3fj1o9LTeP1Sw5" width="100%" height="100%" style="border: none;">Loading…</iframe>
+              <iframe
+                id="google-form-iframe"
+                title="Investor Call Request Form"
+                src="https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?embedded=true"
+                width="100%"
+                height="100%"
+                frameborder="0"
+                marginheight="0"
+                marginwidth="0"
+                style="border: none;"
+              >Loading…</iframe>
             </div>
 
             <p class="contact-meta-note">
@@ -333,7 +336,7 @@
           <div class="contact-sidebar-flow">
             <div class="contact-sidebar-block">
               <h4>Topics for Discussion</h4>
-              <p>Consider highlighting these focus areas in your Typeform inquiry:</p>
+              <p>Consider highlighting these focus areas in your Google Form inquiry:</p>
               <ul class="why-sidebar-list" style="margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; list-style: none;">
                 <li style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; font-weight: 600; color: var(--text-color);">
                   <span style="font-weight: bold; color: var(--color-blue); font-size: 1rem;">●</span> Portfolio Walkthroughs &amp; Deep-Dives
@@ -362,28 +365,28 @@
     </section>
 
     <!-- Interactive PayPal Funding Modal -->
-    <div id="donationModal" class="modal-overlay">
+    <div id="donationModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalProjectTitle">
       <div class="modal-card">
-        <button class="modal-close" id="closeDonationModal" aria-label="Close Modal">&times;</button>
-        
+        <button class="modal-close" id="closeDonationModal" type="button" aria-label="Close Modal">&times;</button>
+
         <div class="modal-header">
           <span class="modal-subtitle">Direct Project Funding</span>
           <h3 id="modalProjectTitle">Support Project Name</h3>
           <p id="modalProjectDesc">Directly back the development and launch of our incubating tech applications.</p>
         </div>
-        
+
         <div class="modal-body">
           <!-- Preset Donation Tiers -->
           <div class="donation-presets">
             <label class="modal-label">Choose Contribution Tier</label>
             <div class="presets-grid">
-              <button class="preset-btn active" data-amount="10">£10</button>
-              <button class="preset-btn" data-amount="25">£25</button>
-              <button class="preset-btn" data-amount="50">£50</button>
-              <button class="preset-btn" data-amount="100">£100</button>
+              <button class="preset-btn active" type="button" data-amount="10">£10</button>
+              <button class="preset-btn" type="button" data-amount="25">£25</button>
+              <button class="preset-btn" type="button" data-amount="50">£50</button>
+              <button class="preset-btn" type="button" data-amount="100">£100</button>
             </div>
           </div>
-          
+
           <!-- Custom Amount & Currency Input -->
           <div class="custom-amount-row">
             <div class="form-group">
@@ -415,7 +418,7 @@
             </div>
           </div>
 
-          <!-- PayPal Button Container -->
+          <!-- PayPal Button Container (populated by projects.js) -->
           <div class="paypal-section">
             <label class="modal-label">Secure Checkout</label>
             <div id="paypal-button-container"></div>
@@ -423,7 +426,7 @@
         </div>
 
         <!-- Success View Overlay -->
-        <div class="modal-success-screen" id="modalSuccessScreen">
+        <div class="modal-success-screen" id="modalSuccessScreen" role="status" aria-live="polite">
           <div class="success-icon-wrapper">
             <svg class="checkmark-svg" viewBox="0 0 52 52">
               <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
@@ -432,7 +435,7 @@
           </div>
           <h3>Funding Complete!</h3>
           <p>Thank you for supporting <strong id="successProjectName">Project</strong>. Your direct payment contribution has successfully processed via PayPal, helping us build the future.</p>
-          <button class="neo-btn neo-btn-primary" id="successCloseBtn" style="padding: 0.5rem 1.5rem; width: 100%;">Close Window</button>
+          <button class="neo-btn neo-btn-primary" id="successCloseBtn" type="button" style="padding: 0.5rem 1.5rem; width: 100%;">Close Window</button>
         </div>
       </div>
     </div>
