@@ -119,7 +119,7 @@
   let donationAmount = 10;
   const ALLOWED = ['GBP', 'USD', 'EUR'];
   if (!ALLOWED.includes(donationCurrency)) donationCurrency = 'GBP';
-  document.querySelector("presets-grid preset-button #currency").textContext = donationCurrency;
+  document.getElementById("currency").textContext = donationCurrency;
   let paypalSDKPromise = null;
   let paypalButtonsInstance = null;
 
@@ -479,7 +479,7 @@
         donationCurrency = this.value;
         const symbolEl = document.getElementById('modalCurrencySymbol');
         if (symbolEl) symbolEl.textContent = currencySymbols[donationCurrency] || '£';
-        const curr = document.querySelector("presets-grid preset-button #currency").textContext = donationCurrency;
+        document.getElementById("currency").textContext = currencySymbols[donationCurrency] || '£';
         renderPayPalButtons();
       });
     }
