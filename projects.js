@@ -130,7 +130,9 @@
   let paypalLoadedCurrency = null;       // currency the SDK is loaded for
   let paypalButtonsInstance = null;
 
-  // ---- Projects rendering ----
+  // ============================================================
+  // PROJECTS
+  // ============================================================
   function renderProjects(filter = 'all') {
     const grid = document.getElementById('projectGrid');
     if (!grid) return;
@@ -188,7 +190,9 @@
     });
   }
 
-  // ---- Filters ----
+  // ============================================================
+  // FILTERS
+  // ============================================================
   function initFilters() {
     const filterButtons = document.querySelectorAll('.filter-btn');
     filterButtons.forEach(btn => {
@@ -200,7 +204,9 @@
     });
   }
 
-  // ---- Counters ----
+  // ============================================================
+  // COUNTERS
+  // ============================================================
   function initCounters() {
     const counters = document.querySelectorAll('[data-target]');
 
@@ -242,7 +248,9 @@
     counters.forEach(counter => observer.observe(counter));
   }
 
-  // ---- Mobile nav ----
+  // ============================================================
+  // MOBILE NAV
+  // ============================================================
   function initMobileNav() {
     const toggle = document.querySelector('.nav-toggle');
     const overlay = document.querySelector('.mobile-nav-overlay');
@@ -276,7 +284,9 @@
     });
   }
 
-  // ---- Donation helpers ----
+  // ============================================================
+  // DONATION HELPERS
+  // ============================================================
   function getDonationAmount() { return donationAmount; }
   function getDonationCurrency() { return donationCurrency; }
 
@@ -293,23 +303,33 @@
     });
   }
 
-  // ---- PayPal SDK loader (per-currency, in-flight locked, stale-safe) ----
+  // Update the "Secure Checkout" status line if it exists
+  function setCheckoutStatus(text, isError = false) {
+    const el = document.getElementById('secure-checkout-status');
+    if (!el) return;
+    el.textContent = text;
+    el.style.color = isError ? '#c00' : '#555';
+  }
+
+  // ============================================================
+  // PAYPAL SDK LOADER (per-currency, in-flight locked, stale-safe)
+  // ============================================================
   function loadPayPalSDK(currency) {
     if (!ALLOWED.includes(currency)) {
       return Promise.reject(new Error(`Currency ${currency} not allowed`));
     }
 
-    // Cache hit: SDK already loaded for THIS exact currency code
+    // Cache hit
     if (window.paypal && paypalLoadedCurrency === currency) {
       return Promise.resolve(window.paypal);
     }
 
-    // In-flight: same currency already loading → reuse
+    // Same currency already loading → reuse
     if (paypalSDKLoadingCurrency === currency && paypalSDKPromise) {
       return paypalSDKPromise;
     }
 
-    // In-flight for a DIFFERENT currency → abandon and start fresh
+    // Different currency loading → abandon and start fresh
     if (paypalSDKLoadingCurrency && paypalSDKLoadingCurrency !== currency) {
       document.querySelectorAll('script[src*="paypal.com/sdk/js"]').forEach(s => s.remove());
       try { delete window.paypal; } catch (e) { window.paypal = undefined; }
@@ -318,14 +338,13 @@
       paypalSDKPromise = null;
     }
 
-    // Clean slate before loading
+    // Clean slate
     document.querySelectorAll('script[src*="paypal.com/sdk/js"]').forEach(s => s.remove());
     try { delete window.paypal; } catch (e) { window.paypal = undefined; }
     paypalLoadedCurrency = null;
 
     paypalSDKLoadingCurrency = currency;
 
-    // &currency= MUST match createOrder's currency_code
     const url = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(PAYPAL_CLIENT_ID)}` +
                 `&currency=${encodeURIComponent(currency)}` +
                 `&intent=capture` +
@@ -349,7 +368,7 @@
 
         paypalLoadedCurrency = currency;
 
-        // Ignore stale loads: user may have switched currency mid-flight
+        // Ignore stale loads (user switched currency mid-flight)
         if (currency !== donationCurrency) {
           reject(new Error(`Stale SDK load for ${currency} ignored`));
           return;
@@ -374,7 +393,9 @@
     return paypalSDKPromise;
   }
 
-  // ---- Shared PayPal button config factory ----
+  // ============================================================
+  // PAYPAL BUTTON FACTORY
+  // ============================================================
   function buildPayPalButtons(paypal, amount, currency) {
     return paypal.Buttons({
       createOrder: (data, actions) =>
@@ -408,7 +429,9 @@
     container.appendChild(p);
   }
 
-  // ---- PayPal button rendering ----
+  // ============================================================
+  // PAYPAL BUTTON RENDERING (fast + slow path, status-aware)
+  // ============================================================
   function renderPayPalButtons() {
     const container = document.getElementById('paypal-button-container');
     if (!container) return;
@@ -427,28 +450,34 @@
     // Enforce per-currency minimum
     const min = MIN_AMOUNT_BY_CURRENCY[currency] || 1;
     if (Number(amount) < min) {
+      setCheckoutStatus(
+        `Minimum ${CURRENCY_SYMBOLS[currency]}${min} for ${currency}.`,
+        true
+      );
       container.innerHTML =
         `<p style="font-size:0.85rem;color:#c00;">Minimum ${CURRENCY_SYMBOLS[currency]}${min} for ${currency}.</p>`;
       return;
     }
 
-    // Fast path: SDK already loaded for this currency → re-render immediately
+    // ---- Fast path: SDK already loaded for this currency ----
     if (window.paypal && paypalLoadedCurrency === currency) {
       try {
         if (paypalButtonsInstance && typeof paypalButtonsInstance.close === 'function') {
           try { paypalButtonsInstance.close(); } catch (e) { /* ignore */ }
         }
         container.innerHTML = '';
+        setCheckoutStatus(`Pay in ${currency}`);
         paypalButtonsInstance = buildPayPalButtons(window.paypal, amount, currency);
         paypalButtonsInstance.render('#paypal-button-container');
         return;
       } catch (e) {
         console.warn('Fast-path render failed, falling back to SDK reload:', e);
-        // Fall through to loader
+        // Fall through to slow path
       }
     }
 
-    // Slow path: need to (re)load the SDK for this currency
+    // ---- Slow path: (re)load SDK for this currency ----
+    setCheckoutStatus(`Loading PayPal for ${currency}…`);
     container.innerHTML = '<p style="font-size:0.85rem;color:#555;">Loading PayPal…</p>';
 
     loadPayPalSDK(currency)
@@ -456,6 +485,7 @@
         if (!paypal) throw new Error('PayPal SDK unavailable');
 
         container.innerHTML = '';
+        setCheckoutStatus(`Pay in ${currency}`);
 
         if (paypalButtonsInstance && typeof paypalButtonsInstance.close === 'function') {
           try { paypalButtonsInstance.close(); } catch (e) { /* ignore */ }
@@ -467,6 +497,7 @@
       .catch((err) => {
         console.error('Failed to load PayPal SDK:', err);
         container.innerHTML = '';
+        setCheckoutStatus('Unable to load PayPal. Please try again.', true);
 
         const p = document.createElement('p');
         p.textContent = 'Unable to load PayPal. Please try again.';
@@ -479,14 +510,15 @@
         retry.textContent = 'Retry';
         retry.style.marginTop = '0.5rem';
         retry.style.fontSize = '0.8rem';
-        retry.addEventListener('click', () => {
-        window.paypal.Buttons.render('#paypal-button-container');
-        });
+        // ✅ Correct: re-run the whole render flow, not paypal.Buttons.render
+        retry.addEventListener('click', () => renderPayPalButtons());
         container.appendChild(retry);
       });
   }
 
-  // ---- Modal open / close ----
+  // ============================================================
+  // MODAL OPEN / CLOSE
+  // ============================================================
   function openDonationModal(projectIndex) {
     const project = projects[projectIndex];
     if (!project) return;
@@ -526,11 +558,17 @@
     });
 
     updatePresetLabels();
+    setCheckoutStatus('Loading PayPal…');
 
     if (modal) modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    setTimeout(renderPayPalButtons, 0);
+    // Two rAFs to ensure modal is painted and laid out before PayPal renders
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        renderPayPalButtons();
+      });
+    });
   }
 
   function closeDonationModal() {
@@ -559,7 +597,9 @@
     if (successScreen) successScreen.classList.add('active');
   }
 
-  // ---- Modal listeners ----
+  // ============================================================
+  // MODAL LISTENERS
+  // ============================================================
   function initDonationModalListeners() {
     const closeBtn = document.getElementById('closeDonationModal');
     const successCloseBtn = document.getElementById('successCloseBtn');
@@ -615,16 +655,20 @@
         updatePresetLabels();
 
         // 3. Force PayPal to reload for the new currency and re-render.
-        //    requestAnimationFrame ensures the DOM has painted the new
-        //    labels/symbol before we tear down and re-render the container.
+        //    Two rAFs ensure the DOM has painted the new labels/symbol
+        //    before we tear down and re-render the container.
         requestAnimationFrame(() => {
-          renderPayPalButtons();
+          requestAnimationFrame(() => {
+            renderPayPalButtons();
+          });
         });
       });
     }
   }
 
-  // ---- Google Form focus helper ----
+  // ============================================================
+  // GOOGLE FORM FOCUS HELPER
+  // ============================================================
   function focusGoogleForm() {
     const iframe = document.getElementById('google-form-iframe');
     if (!iframe) return;
@@ -635,7 +679,9 @@
     }, 600);
   }
 
-  // ---- Init ----
+  // ============================================================
+  // INIT
+  // ============================================================
   document.addEventListener('DOMContentLoaded', () => {
     renderProjects('all');
     initFilters();
