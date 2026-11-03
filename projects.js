@@ -477,7 +477,7 @@
 
     if (currencySelect) {
       currencySelect.addEventListener('change', function() {
-        curr = ALLOWED.includes(this.value) ? this.value : 'GBP';
+        curr.textContext = ALLOWED.includes(this.value) ? this.value : 'GBP';
         donationCurrency = ALLOWED.includes(this.value) ? this.value : 'GBP';
         this.value = donationCurrency;
         const symbolEl = document.getElementById('modalCurrencySymbol');
