@@ -270,6 +270,15 @@
     });
   }
 
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    // 1. Remove .active from every preset
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    // 2. Add .active to the one that was clicked
+    this.classList.add('active');
+  });
+});
+
   // ============================================================
   // DONATION HELPERS
   // ============================================================
@@ -395,10 +404,7 @@
     container.appendChild(p);
   }
 
-  document.querySelector('.preset-btn .active').addEventListener('click' , () => {
-    document.querySelector('.preset-btn .active').classList.remove('active');
-    document.querySelector('.preset-btn').classList.add('active');
-  });
+
 
   // ============================================================
   // PAYPAL BUTTON RENDERING
