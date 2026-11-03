@@ -479,7 +479,10 @@
         retry.textContent = 'Retry';
         retry.style.marginTop = '0.5rem';
         retry.style.fontSize = '0.8rem';
-        retry.addEventListener('click', () => renderPayPalButtons());
+        retry.addEventListener('click', () => {
+        paypalButtonsInstance = buildPayPalButtons(paypal, amount, currency);
+        return paypalButtonsInstance.render('#paypal-button-container');
+        });
         container.appendChild(retry);
       });
   }
