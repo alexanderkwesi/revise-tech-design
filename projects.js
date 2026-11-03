@@ -367,6 +367,16 @@
       });
   }
 
+
+  function updatePresetLabels() {
+  const symbols = { GBP: '£', USD: '$', EUR: '€' };
+  const symbol = symbols[donationCurrency] || '£';
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    const amt = btn.getAttribute('data-amount');
+    btn.textContent = `${symbol}${amt}`;
+  });
+}
+  
   // ---- Modal open / close ----
   function openDonationModal(projectIndex) {
     const project = projects[projectIndex];
