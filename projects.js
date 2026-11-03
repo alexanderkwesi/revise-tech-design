@@ -472,10 +472,12 @@
     }
 
     const currencySelect = document.getElementById('donationCurrency');
+    const curr = document.getElementById('currency');
     const currencySymbols = { 'GBP': '£', 'USD': '$', 'EUR': '€' };
 
     if (currencySelect) {
       currencySelect.addEventListener('change', function() {
+        curr = ALLOWED.includes(this.value) ? this.value : 'GBP';
         donationCurrency = ALLOWED.includes(this.value) ? this.value : 'GBP';
         this.value = donationCurrency;
         const symbolEl = document.getElementById('modalCurrencySymbol');
