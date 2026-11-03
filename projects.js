@@ -111,29 +111,28 @@
     }
   ];
 
-  // Global variables to track state
+  // ---- Config ----
+  const PAYPAL_CLIENT_ID = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
+
+  // ---- State ----
   let activeProject = null;
   let donationAmount = 10;
   let donationCurrency = 'GBP';
+  let paypalSDKPromise = null;
+  let paypalButtonsInstance = null;
 
-
-
-  // Render projects function
+  // ---- Projects rendering ----
   function renderProjects(filter = 'all') {
     const grid = document.getElementById('projectGrid');
     if (!grid) return;
 
-    // Filter projects
-    const filteredProjects = filter === 'all' 
-      ? projects 
-      : projects.filter(p => p.filterCategory === filter);
+    const filteredProjects = filter === 'all'
+      ? projects.map((p, i) => ({ project: p, originalIndex: i }))
+      : projects
+          .map((p, i) => ({ project: p, originalIndex: i }))
+          .filter(({ project }) => project.filterCategory === filter);
 
-    // Map projects to HTML
-    grid.innerHTML = filteredProjects.map(p => {
-      // Find index in original list to handle funding triggers
-      const origIndex = projects.findIndex(orig => orig.title === p.title);
-      
-      // Determine color scheme class based on category
+    grid.innerHTML = filteredProjects.map(({ project: p, originalIndex }) => {
       let headerClass = 'header-default';
       if (p.filterCategory === 'ai') headerClass = 'header-ai';
       else if (p.filterCategory === 'fintech') headerClass = 'header-fintech';
@@ -157,14 +156,13 @@
             </div>
             <div class="project-actions" style="display: flex; gap: 0.5rem; align-items: center;">
               ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="project-card-action-link">Visit →</a>` : ''}
-              <button class="project-card-donate-btn" data-index="${origIndex}">Fund</button>
+              <button class="project-card-donate-btn" data-index="${originalIndex}">Fund</button>
             </div>
           </div>
         </article>
       `;
     }).join('');
 
-    // Trigger progressive fade-in animation
     const cards = grid.querySelectorAll('.project-neo-card');
     cards.forEach((card, index) => {
       setTimeout(() => {
@@ -173,7 +171,6 @@
       }, index * 40);
     });
 
-    // Wire up funding triggers
     grid.querySelectorAll('.project-card-donate-btn').forEach(btn => {
       btn.addEventListener('click', function() {
         const index = parseInt(this.getAttribute('data-index'), 10);
@@ -182,60 +179,51 @@
     });
   }
 
-  // Initialize filters
+  // ---- Filters ----
   function initFilters() {
     const filterButtons = document.querySelectorAll('.filter-btn');
     filterButtons.forEach(btn => {
       btn.addEventListener('click', function() {
-        // Remove active class from all buttons
         filterButtons.forEach(b => b.classList.remove('active'));
-        // Add active class to clicked button
         this.classList.add('active');
-        // Render projects
-        const category = this.getAttribute('data-filter');
-        renderProjects(category);
+        renderProjects(this.getAttribute('data-filter'));
       });
     });
   }
 
-  // Count up animation for stats
+  // ---- Counters ----
   function initCounters() {
     const counters = document.querySelectorAll('[data-target]');
-    
+
     const countUp = (counter) => {
       const target = +counter.getAttribute('data-target');
       const prefix = counter.getAttribute('data-prefix') || '';
       const suffix = counter.getAttribute('data-suffix') || '';
-      const duration = 1500; // ms
+      const duration = 1500;
       const startTime = performance.now();
-      
+
       const update = (now) => {
         const elapsed = now - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        
-        // Easing function (easeOutQuad)
         const ease = progress * (2 - progress);
-        
         const currentValue = Math.floor(ease * target);
-        
+
         if (target >= 100) {
-          // Format stats with plus sign if appropriate
           counter.textContent = `${prefix}${currentValue.toLocaleString()}${suffix}`;
         } else {
           counter.textContent = `${prefix}${currentValue}${suffix}`;
         }
-        
+
         if (progress < 1) {
           requestAnimationFrame(update);
         } else {
           counter.textContent = `${prefix}${target.toLocaleString()}${suffix}`;
         }
       };
-      
+
       requestAnimationFrame(update);
     };
-    
-    // Use IntersectionObserver to animate when visible
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -248,48 +236,43 @@
     counters.forEach(counter => observer.observe(counter));
   }
 
-
-  // Mobile nav toggler
+  // ---- Mobile nav ----
   function initMobileNav() {
     const toggle = document.querySelector('.nav-toggle');
     const overlay = document.querySelector('.mobile-nav-overlay');
     const links = document.querySelectorAll('.mobile-nav-link');
-    
-    if (toggle && overlay) {
-      toggle.addEventListener('click', function() {
-        toggle.classList.toggle('active');
-        overlay.classList.toggle('active');
-        
-        // Animate the hamburger button
+
+    if (!toggle || !overlay) return;
+
+    toggle.addEventListener('click', function() {
+      toggle.classList.toggle('active');
+      overlay.classList.toggle('active');
+
+      const spans = toggle.querySelectorAll('span');
+      if (toggle.classList.contains('active')) {
+        spans[0].style.transform = 'rotate(-45deg) translate(-5px, 6px)';
+        spans[1].style.opacity = '0';
+        spans[2].style.transform = 'rotate(45deg) translate(-5px, -6px)';
+      } else {
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = 'none';
+      }
+    });
+
+    links.forEach(link => {
+      link.addEventListener('click', function() {
+        toggle.classList.remove('active');
+        overlay.classList.remove('active');
         const spans = toggle.querySelectorAll('span');
-        if (toggle.classList.contains('active')) {
-          spans[0].style.transform = 'rotate(-45deg) translate(-5px, 6px)';
-          spans[1].style.opacity = '0';
-          spans[2].style.transform = 'rotate(45deg) translate(-5px, -6px)';
-        } else {
-          spans[0].style.transform = 'none';
-          spans[1].style.opacity = '1';
-          spans[2].style.transform = 'none';
-        }
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = 'none';
       });
-      
-      links.forEach(link => {
-        link.addEventListener('click', function() {
-          toggle.classList.remove('active');
-          overlay.classList.remove('active');
-          const spans = toggle.querySelectorAll('span');
-          spans[0].style.transform = 'none';
-          spans[1].style.opacity = '1';
-          spans[2].style.transform = 'none';
-        });
-      });
-    }
+    });
   }
 
-  /* PayPal Donation Functions */
-
-  let paypalButtonsInstance = null;
-
+  // ---- Donation helpers ----
   function getDonationAmount() {
     return donationAmount;
   }
@@ -298,108 +281,247 @@
     return donationCurrency;
   }
 
+  function formatAmount(value) {
+    const n = Number(value);
+    return (isNaN(n) ? 0 : n).toFixed(2);
+  }
 
-  
+  // ---- PayPal SDK loader (singleton) ----
+  function loadPayPalSDK(currency) {
+    // If we already loaded the SDK for a different currency, reload.
+    // PayPal SDK caches by URL, so we track the currency we loaded for.
+    if (window.paypal && window.__paypalLoadedCurrency === currency) {
+      return Promise.resolve(window.paypal);
+    }
+
+    if (paypalSDKPromise && window.__paypalLoadedCurrency === currency) {
+      return paypalSDKPromise;
+    }
+
+    // Remove any existing PayPal script so a new currency can take effect
+    document.querySelectorAll('script[src*="paypal.com/sdk/js"]').forEach(s => s.remove());
+    // PayPal also sets a global; delete so it reloads with new params
+    try { delete window.paypal; } catch (e) { window.paypal = undefined; }
+
+    const url = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(PAYPAL_CLIENT_ID)}&currency=${encodeURIComponent(currency)}&intent=capture`;
+
+    paypalSDKPromise = new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = url;
+      s.async = true;
+      s.onload = () => {
+        window.__paypalLoadedCurrency = currency;
+        resolve(window.paypal);
+      };
+      s.onerror = () => reject(new Error("Failed to load PayPal SDK"));
+      document.head.appendChild(s);
+    });
+
+    return paypalSDKPromise;
+  }
+
+  // ---- PayPal button rendering ----
+  function renderPayPalButtons() {
+    const container = document.getElementById("paypal-button-container");
+    if (!container) return;
+
+    // If the modal isn't open, don't render
+    const modal = document.getElementById('donationModal');
+    if (!modal || !modal.classList.contains('active')) return;
+
+    const amount = formatAmount(getDonationAmount());
+    const currency = getDonationCurrency();
+
+    container.innerHTML = "";
+
+    loadPayPalSDK(currency)
+      .then((paypal) => {
+        if (!paypal) throw new Error("PayPal SDK unavailable");
+
+        // Destroy any previous button instance
+        if (paypalButtonsInstance && typeof paypalButtonsInstance.close === 'function') {
+          try { paypalButtonsInstance.close(); } catch (e) { /* ignore */ }
+        }
+
+        paypalButtonsInstance = paypal.Buttons({
+          createOrder: (data, actions) =>
+            actions.order.create({
+              purchase_units: [{
+                amount: { value: amount, currency_code: currency }
+              }]
+            }),
+          onApprove: (data, actions) =>
+            actions.order.capture().then((details) => {
+              console.log("Transaction completed by", details.payer && details.payer.name && details.payer.name.given_name);
+              triggerDonationSuccess();
+            }),
+          onError: (err) => {
+            console.error("PayPal error:", err);
+          }
+        });
+
+        return paypalButtonsInstance.render("#paypal-button-container");
+      })
+      .catch((err) => {
+        console.error("Failed to load PayPal SDK:", err);
+        // Fallback: show a simple message so the user isn't stuck
+        const fallback = document.createElement('p');
+        fallback.textContent = "Unable to load PayPal. Please try again.";
+        fallback.style.color = "#c00";
+        container.appendChild(fallback);
+      });
+  }
+
+  // ---- Modal open / close ----
   function openDonationModal(projectIndex) {
+    const project = projects[projectIndex];
+    if (!project) return;
 
-    
-    const activeProject = projects[projectIndex];
-    if (!activeProject) return;
+    activeProject = project;
 
+    // Reset donation state to defaults
     donationAmount = 10;
     donationCurrency = 'GBP';
 
-    document.getElementById('modalProjectTitle').textContent = `Fund ${activeProject.title}`;
-    document.getElementById('modalProjectDesc').textContent = activeProject.desc;
-    document.getElementById('modalCurrencySymbol').textContent = '£';
-    document.getElementById('customAmount').value = '';
-    document.getElementById('backerName').value = '';
-    document.getElementById('backerMessage').value = '';
-    document.getElementById('donationCurrency').value = 'GBP';
+    // Populate modal content
+    const titleEl = document.getElementById('modalProjectTitle');
+    const descEl = document.getElementById('modalProjectDesc');
+    const symbolEl = document.getElementById('modalCurrencySymbol');
+    const customAmountEl = document.getElementById('customAmount');
+    const backerNameEl = document.getElementById('backerName');
+    const backerMessageEl = document.getElementById('backerMessage');
+    const currencyEl = document.getElementById('donationCurrency');
+    const successScreen = document.getElementById('modalSuccessScreen');
+    const modal = document.getElementById('donationModal');
 
+    if (titleEl) titleEl.textContent = `Fund ${project.title}`;
+    if (descEl) descEl.textContent = project.desc;
+    if (symbolEl) symbolEl.textContent = '£';
+    if (customAmountEl) customAmountEl.value = '';
+    if (backerNameEl) backerNameEl.value = '';
+    if (backerMessageEl) backerMessageEl.value = '';
+    if (currencyEl) currencyEl.value = 'GBP';
+    if (successScreen) successScreen.classList.remove('active');
+
+    // Reset preset buttons
     const presetButtons = document.querySelectorAll('.preset-btn');
     presetButtons.forEach(btn => {
       btn.classList.remove('active');
-      if (btn.getAttribute('data-amount') === '10') {
-        btn.classList.add('active');
-      }
+      if (btn.getAttribute('data-amount') === '10') btn.classList.add('active');
     });
 
-    document.getElementById('modalSuccessScreen').classList.remove('active');
-    document.getElementById('donationModal').classList.add('active');
+    if (modal) modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
+    // Render PayPal buttons for this donation
+    // Wait a tick so the modal is visible and container has layout
+    setTimeout(renderPayPalButtons, 0);
   }
 
   function closeDonationModal() {
-    document.getElementById('closeDonationModal').classList.remove("active");
+    const modal = document.getElementById('donationModal');
+    const successScreen = document.getElementById('modalSuccessScreen');
+    if (modal) modal.classList.remove('active');
+    if (successScreen) successScreen.classList.remove('active');
     document.body.style.overflow = '';
+
+    // Tear down PayPal button instance so it doesn't linger
+    if (paypalButtonsInstance && typeof paypalButtonsInstance.close === 'function') {
+      try { paypalButtonsInstance.close(); } catch (e) { /* ignore */ }
+    }
+    paypalButtonsInstance = null;
+
+    const container = document.getElementById('paypal-button-container');
+    if (container) container.innerHTML = "";
   }
 
-  //import { loadScript } from "@paypal/paypal-js";
-  const amount = getDonationAmount();
-  const curr = getDonationCurrency();
-  const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
+  function triggerDonationSuccess() {
+    const successScreen = document.getElementById('modalSuccessScreen');
+    const successProjectName = document.getElementById('successProjectName');
 
-  
- // ---- Config ----
-const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
+    if (successProjectName && activeProject) {
+      successProjectName.textContent = activeProject.title;
+    }
+    if (successScreen) successScreen.classList.add('active');
+  }
 
-function renderButtonForPayPal(clientId, curr, amount) {
-  // 1) Build the URL with template literal interpolation, include currency + intent
-  const script = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=${encodeURIComponent(curr)}&intent=capture`;
+  // ---- Modal listeners ----
+  function initDonationModalListeners() {
+    const closeBtn = document.getElementById('closeDonationModal');
+    const successCloseBtn = document.getElementById('successCloseBtn');
+    const modalOverlay = document.getElementById('donationModal');
 
-  // 2) Load the script ourselves (window.paypalLoadScript is not a standard API)
-  const loadPayPal = new Promise((resolve, reject) => {
-    if (window.paypal) return resolve(window.paypal); // already loaded
-    const s = document.createElement("script");
-    s.src = script;
-    s.async = true;
-    s.onload = () => resolve(window.paypal);
-    s.onerror = () => reject(new Error("Failed to load PayPal SDK"));
-    document.head.appendChild(s);
+    if (closeBtn) closeBtn.addEventListener('click', closeDonationModal);
+    if (successCloseBtn) successCloseBtn.addEventListener('click', closeDonationModal);
+
+    if (modalOverlay) {
+      modalOverlay.addEventListener('click', function(e) {
+        if (e.target === this) closeDonationModal();
+      });
+    }
+
+    // Preset amount buttons
+    const presets = document.querySelectorAll('.preset-btn');
+    const customAmountInput = document.getElementById('customAmount');
+
+    presets.forEach(btn => {
+      btn.addEventListener('click', function() {
+        presets.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        donationAmount = parseFloat(this.getAttribute('data-amount')) || 0;
+        if (customAmountInput) customAmountInput.value = '';
+        renderPayPalButtons();
+      });
+    });
+
+    if (customAmountInput) {
+      customAmountInput.addEventListener('input', function() {
+        presets.forEach(b => b.classList.remove('active'));
+        const val = parseFloat(this.value);
+        donationAmount = isNaN(val) ? 0 : val;
+        renderPayPalButtons();
+      });
+    }
+
+    // Currency selector
+    const currencySelect = document.getElementById('donationCurrency');
+    const currencySymbols = { 'GBP': '£', 'USD': '$', 'EUR': '€' };
+
+    if (currencySelect) {
+      currencySelect.addEventListener('change', function() {
+        donationCurrency = this.value;
+        const symbolEl = document.getElementById('modalCurrencySymbol');
+        if (symbolEl) symbolEl.textContent = currencySymbols[donationCurrency] || '£';
+        renderPayPalButtons();
+      });
+    }
+  }
+
+  // ---- Google Form focus helper ----
+  function focusGoogleForm() {
+    const iframe = document.getElementById('google-form-iframe');
+    if (!iframe) return;
+    setTimeout(() => {
+      try { iframe.focus(); } catch (e) {
+        console.warn("Unable to programmatically focus Google Form iframe: ", e);
+      }
+    }, 600);
+  }
+
+  // ---- Init ----
+  document.addEventListener('DOMContentLoaded', () => {
+    renderProjects('all');
+    initFilters();
+    initCounters();
+    initMobileNav();
+    initDonationModalListeners();
+    focusGoogleForm();
   });
 
-  loadPayPal
-    .then((paypal) => {
-      // Clear any previously rendered buttons before re-rendering
-      const container = document.getElementById("paypal-button-container");
-      if (container) container.innerHTML = "";
-
-      return paypal.Buttons({
-        createOrder: (data, actions) =>
-          actions.order.create({
-            purchase_units: [{ amount: { value: amount, currency_code: curr } }],
-          }),
-        onApprove: (data, actions) =>
-          actions.order.capture().then((details) => {
-            console.log("Transaction completed by", details.payer.name.given_name);
-          }),
-        onError: (err) => console.error("PayPal error:", err),
-      }).render("#paypal-button-container");
-    })
-    .catch((err) => console.error("Failed to load PayPal SDK:", err));
-
-  // 3) UI feedback (moved so it doesn't run before SDK load logic; fine either way)
-  const btn = document.getElementById("simulatedPaypalBtn");
-  if (btn) {
-    btn.textContent = "Processing Transaction...";
-    btn.disabled = true;
-    btn.style.opacity = "0.7";
-  }
-
-  setTimeout(() => {
-    triggerDonationSuccess();
-  }, 1000);
-}
-
-// 4) Correct load hook — don't call window.onload as a function
-window.addEventListener("load", () => {
-  const amount = getDonationAmount();
-  const curr = getDonationCurrency();
-  renderButtonForPayPal(clientId, curr, Number(amount).toFixed(2));
-});
-
+  window.addEventListener('hashchange', () => {
+    if (window.location.hash === '#contact') focusGoogleForm();
+  });
+})();
   function triggerDonationSuccess() {
     const successScreen = document.getElementById('modalSuccessScreen');
     const successProjectName = document.getElementById('successProjectName');
