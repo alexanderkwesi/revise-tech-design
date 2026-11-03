@@ -543,13 +543,49 @@
     </script>
     <script>      
       document.getElementById('project-actions-A').addEventListener('click', () => {
-      window.paypal.Buttons.render('#paypal-action-a');
+      window.paypalLoadScript({ clientId: "test", currency: "EUR" })
+  .then((paypal) => {
+    return paypal.Buttons({
+      createOrder: (data, actions) =>
+        actions.order.create({ purchase_units: [{ amount: { value: "50.00" } }] }),
+      onApprove: (data, actions) =>
+        actions.order.capture().then((details) => {
+          console.log("Transaction completed by", details.payer.name.given_name);
+        }),
+      onError: (err) => console.error("PayPal error:", err),
+    }).render("#paypal-1");
+  })
+  .catch((err) => console.error("Failed to load PayPal SDK:", err));
       });
       document.getElementById('project-actions-B').addEventListener('click', () => {
-      paypal.Buttons.render('#paypal-action-b');
+      window.paypalLoadScript({ clientId: "test", currency: "EUR" })
+  .then((paypal) => {
+    return paypal.Buttons({
+      createOrder: (data, actions) =>
+        actions.order.create({ purchase_units: [{ amount: { value: "50.00" } }] }),
+      onApprove: (data, actions) =>
+        actions.order.capture().then((details) => {
+          console.log("Transaction completed by", details.payer.name.given_name);
+        }),
+      onError: (err) => console.error("PayPal error:", err),
+    }).render("#paypal-1");
+  })
+  .catch((err) => console.error("Failed to load PayPal SDK:", err));
       });
       document.getElementById('project-actions-C').addEventListener('click', () => {
-      paypal.Buttons.render('#paypal-action-c');
+      pwindow.paypalLoadScript({ clientId: "test", currency: "EUR" })
+  .then((paypal) => {
+    return paypal.Buttons({
+      createOrder: (data, actions) =>
+        actions.order.create({ purchase_units: [{ amount: { value: "50.00" } }] }),
+      onApprove: (data, actions) =>
+        actions.order.capture().then((details) => {
+          console.log("Transaction completed by", details.payer.name.given_name);
+        }),
+      onError: (err) => console.error("PayPal error:", err),
+    }).render("#paypal-1");
+  })
+  .catch((err) => console.error("Failed to load PayPal SDK:", err));
       });
     </script>
   </body>
