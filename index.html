@@ -235,7 +235,7 @@
         <li>Consumer lead product design at the fore front of engineering</li>
       </ul>
       <a href="#contact" class="neo-btn">Partner With Scourge →</a>
-      <div class="project-actions" style="display: flex; gap: 0.5rem; align-items: center;">
+      <div id="project-actions-A" class="project-actions" style="display: flex; gap: 0.5rem; align-items: center;">
               <button class="project-card-donate-btn" data-index="${originalIndex}">Fund</button>
       </div>
     </div>
@@ -255,7 +255,7 @@
         <li>Eye health restored with care</li>
       </ul>
       <a href="#contact" class="neo-btn">Partner With Restoracin →</a>
-      <div class="project-actions" style="display: flex; gap: 0.5rem; align-items: center;">
+      <div id="project-actions-B" class="project-actions" style="display: flex; gap: 0.5rem; align-items: center;">
               <button class="project-card-donate-btn" data-index="${originalIndex}">Fund</button>
       </div>
     </div>
@@ -275,7 +275,7 @@
         <li>Visible results with minimal downtime</li>
       </ul>
       <a href="#contact" class="neo-btn">Partner With RadFrac Derma →</a>
-      <div class="project-actions" style="display: flex; gap: 0.5rem; align-items: center;">
+      <div id="project-actions-C" class="project-actions" style="display: flex; gap: 0.5rem; align-items: center;">
              <button class="project-card-donate-btn" data-index="${originalIndex}">Fund</button>
       </div>
     </div>
@@ -535,7 +535,7 @@
       </div>
     </footer>
     <script>
-      document.querySelectionAll('project-actions').addEventListener('click', () => {
+      document.getElementById('project-actions-A project-actions-B project-actions-C').addEventListener('click', () => {
       document.getElementById('donationModal').style.display = 'block';
       });
     </script>
