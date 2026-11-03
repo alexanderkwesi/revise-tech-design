@@ -470,7 +470,6 @@
         this.classList.add('active');
         donationAmount = parseFloat(this.getAttribute('data-amount')) || 0;
         if (customAmountInput) customAmountInput.value = '';
-        updatePresetLabels();
         renderPayPalButtons();
       });
     });
