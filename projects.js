@@ -414,6 +414,7 @@
     });
 
     updatePresetLabels();
+    renderPayPalButtons();
 
     if (modal) modal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -523,7 +524,6 @@
     initDonationModalListeners();
     focusGoogleForm();
     updatePresetLabels();
-    renderPayPalButtons();
   });
 
   window.addEventListener('hashchange', () => {
