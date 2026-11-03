@@ -329,10 +329,6 @@
     document.getElementById('donationModal').classList.add('active');
     document.body.style.overflow = 'hidden';
 
-        const amount = getDonationAmount();
-    const curr = getDonationCurrency();
-    const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
-    renderButtonForPayPal(clientId, curr, amount.toFixed(2));
   }
 
   function closeDonationModal() {
@@ -340,43 +336,69 @@
     document.body.style.overflow = '';
   }
 
+  //import { loadScript } from "@paypal/paypal-js";
   const amount = getDonationAmount();
   const curr = getDonationCurrency();
   const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
 
-  function renderButtonForPayPal(clientId, curr, amount) {
-  window.paypalLoadScript({ clientId: clientId, currency: curr, value:amount })
-  .then((paypal) => {
-    return paypal.Buttons({
-      createOrder: (data, actions) =>
-        actions.order.create({ purchase_units: [{ amount: { value:amount } }] }),
-      onApprove: (data, actions) =>
-        actions.order.capture().then((details) => {
-          console.log("Transaction completed by", details.payer.name.given_name);
-        }),
-      onError: (err) => console.error("PayPal error:", err),
-    }).render("#paypal-button-container");
-  })
-  .catch((err) => console.error("Failed to load PayPal SDK:", err));
- 
-  const btn = document.getElementById('simulatedPaypalBtn');
-  btn.textContent = "Processing Transaction...";
-  btn.disabled = true;
-  btn.style.opacity = '0.7';
+  
+ // ---- Config ----
+const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
+
+function renderButtonForPayPal(clientId, curr, amount) {
+  // 1) Build the URL with template literal interpolation, include currency + intent
+  const script = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=${encodeURIComponent(curr)}&intent=capture`;
+
+  // 2) Load the script ourselves (window.paypalLoadScript is not a standard API)
+  const loadPayPal = new Promise((resolve, reject) => {
+    if (window.paypal) return resolve(window.paypal); // already loaded
+    const s = document.createElement("script");
+    s.src = script;
+    s.async = true;
+    s.onload = () => resolve(window.paypal);
+    s.onerror = () => reject(new Error("Failed to load PayPal SDK"));
+    document.head.appendChild(s);
+  });
+
+  loadPayPal
+    .then((paypal) => {
+      // Clear any previously rendered buttons before re-rendering
+      const container = document.getElementById("paypal-button-container");
+      if (container) container.innerHTML = "";
+
+      return paypal.Buttons({
+        createOrder: (data, actions) =>
+          actions.order.create({
+            purchase_units: [{ amount: { value: amount, currency_code: curr } }],
+          }),
+        onApprove: (data, actions) =>
+          actions.order.capture().then((details) => {
+            console.log("Transaction completed by", details.payer.name.given_name);
+          }),
+        onError: (err) => console.error("PayPal error:", err),
+      }).render("#paypal-button-container");
+    })
+    .catch((err) => console.error("Failed to load PayPal SDK:", err));
+
+  // 3) UI feedback (moved so it doesn't run before SDK load logic; fine either way)
+  const btn = document.getElementById("simulatedPaypalBtn");
+  if (btn) {
+    btn.textContent = "Processing Transaction...";
+    btn.disabled = true;
+    btn.style.opacity = "0.7";
+  }
 
   setTimeout(() => {
-  triggerDonationSuccess();
+    triggerDonationSuccess();
   }, 1000);
+}
 
-  }
-
-  function OnLoad()
-  {
-    window.onload({
-      renderButtonForPayPal(clientId, curr, amount.toFixed(2));
-    });
-
-  }
+// 4) Correct load hook — don't call window.onload as a function
+window.addEventListener("load", () => {
+  const amount = getDonationAmount();
+  const curr = getDonationCurrency();
+  renderButtonForPayPal(clientId, curr, Number(amount).toFixed(2));
+});
 
   function triggerDonationSuccess() {
     const successScreen = document.getElementById('modalSuccessScreen');
