@@ -539,54 +539,45 @@
         </div>
       </div>
     </footer>
-    <script src="projects.js">
-    </script>
-    <script>      
-      document.getElementById('project-actions-A').addEventListener('click', () => {
-      window.paypalLoadScript({ clientId: "test", currency: "EUR" })
-  .then((paypal) => {
-    return paypal.Buttons({
-      createOrder: (data, actions) =>
-        actions.order.create({ purchase_units: [{ amount: { value: "50.00" } }] }),
-      onApprove: (data, actions) =>
-        actions.order.capture().then((details) => {
-          console.log("Transaction completed by", details.payer.name.given_name);
-        }),
-      onError: (err) => console.error("PayPal error:", err),
-    }).render("#paypal-1");
-  })
-  .catch((err) => console.error("Failed to load PayPal SDK:", err));
+    <script src="projects.js"></script>
+<script>
+  (function () {
+    const PAYPAL_CLIENT_ID = "YOUR_REAL_CLIENT_ID";
+    const CURRENCY = "EUR";
+    const AMOUNT = "50.00";
+
+    let sdkPromise = null;
+    let buttonInstance = null;
+
+    function loadPayPalSDK() { /* same as above */ }
+
+    function renderShared() {
+      loadPayPalSDK().then((paypal) => {
+        const container = document.querySelector("#paypal-1");
+        if (!container) return;
+        if (buttonInstance) { try { buttonInstance.close(); } catch (e) {} }
+        container.innerHTML = "";
+        buttonInstance = paypal.Buttons({
+          createOrder: (d, a) => a.order.create({
+            purchase_units: [{ amount: { value: AMOUNT, currency_code: CURRENCY } }]
+          }),
+          onApprove: (d, a) => a.order.capture().then(det => {
+            console.log("Transaction completed by",
+              det.payer && det.payer.name && det.payer.name.given_name);
+          }),
+          onError: (err) => console.error("PayPal error:", err)
+        });
+        buttonInstance.render("#paypal-1");
+      }).catch(err => console.error("Failed to load PayPal SDK:", err));
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      ["project-actions-A", "project-actions-B", "project-actions-C"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("click", renderShared);
       });
-      document.getElementById('project-actions-B').addEventListener('click', () => {
-      window.paypalLoadScript({ clientId: "test", currency: "EUR" })
-  .then((paypal) => {
-    return paypal.Buttons({
-      createOrder: (data, actions) =>
-        actions.order.create({ purchase_units: [{ amount: { value: "50.00" } }] }),
-      onApprove: (data, actions) =>
-        actions.order.capture().then((details) => {
-          console.log("Transaction completed by", details.payer.name.given_name);
-        }),
-      onError: (err) => console.error("PayPal error:", err),
-    }).render("#paypal-1");
-  })
-  .catch((err) => console.error("Failed to load PayPal SDK:", err));
-      });
-      document.getElementById('project-actions-C').addEventListener('click', () => {
-      pwindow.paypalLoadScript({ clientId: "test", currency: "EUR" })
-  .then((paypal) => {
-    return paypal.Buttons({
-      createOrder: (data, actions) =>
-        actions.order.create({ purchase_units: [{ amount: { value: "50.00" } }] }),
-      onApprove: (data, actions) =>
-        actions.order.capture().then((details) => {
-          console.log("Transaction completed by", details.payer.name.given_name);
-        }),
-      onError: (err) => console.error("PayPal error:", err),
-    }).render("#paypal-1");
-  })
-  .catch((err) => console.error("Failed to load PayPal SDK:", err));
-      });
-    </script>
+    });
+  })();
+</script>
   </body>
 </html>
