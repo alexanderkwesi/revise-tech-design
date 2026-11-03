@@ -401,7 +401,7 @@
     if (titleEl) titleEl.textContent = `Fund ${project.title}`;
     if (descEl) descEl.textContent = project.desc;
     if (symbolEl) symbolEl.textContent = '£';
-    if (curr) curr.textContent = 'GBP';
+    if (curr) curr.textContent = symbolE1;
     if (customAmountEl) customAmountEl.value = '';
     if (backerNameEl) backerNameEl.value = '';
     if (backerMessageEl) backerMessageEl.value = '';
