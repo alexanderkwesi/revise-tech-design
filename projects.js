@@ -320,6 +320,7 @@
   // ---- PayPal button rendering ----
   function renderPayPalButtons() {
     const container = document.getElementById("paypal-button-container");
+    const curr = document.querySelector("presets-grid preset-button #currency");
     if (!container) return;
 
     const modal = document.getElementById('donationModal');
@@ -327,7 +328,7 @@
 
     const amount = formatAmount(getDonationAmount());
     const currency = getDonationCurrency();
-
+    curr.innerHTML = currency;
     container.innerHTML = "";
 
     loadPayPalSDK(currency)
