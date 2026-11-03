@@ -523,6 +523,7 @@
     initDonationModalListeners();
     focusGoogleForm();
     updatePresetLabels();
+    renderPayPalButtons();
   });
 
   window.addEventListener('hashchange', () => {
