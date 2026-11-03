@@ -270,14 +270,7 @@
     });
   }
 
-  document.querySelectorAll('.preset-btn').forEach(btn => {
-  btn.addEventListener('click', function() {
-    // 1. Remove .active from every preset
-    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-    // 2. Add .active to the one that was clicked
-    this.classList.add('active');
-  });
-});
+
 
   // ============================================================
   // DONATION HELPERS
@@ -546,7 +539,20 @@
     const closeBtn = document.getElementById('closeDonationModal');
     const successCloseBtn = document.getElementById('successCloseBtn');
     const modalOverlay = document.getElementById('donationModal');
+        // ---- Preset amount buttons ----
+    const presets = document.querySelectorAll('.preset-btn');
+    presets.forEach(btn => {
+      btn.addEventListener('click', function() {
+        presets.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
 
+        // ✅ Update the amount from the clicked button
+        donationAmount = parseFloat(this.getAttribute('data-amount')) || 0;
+
+        // Re-render PayPal with the new amount
+        renderPayPalButtons();
+      });
+    });
     if (closeBtn) closeBtn.addEventListener('click', closeDonationModal);
     if (successCloseBtn) successCloseBtn.addEventListener('click', closeDonationModal);
     if (modalOverlay) {
