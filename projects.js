@@ -395,6 +395,11 @@
     container.appendChild(p);
   }
 
+  document.querySelector('.preset-btn .active').addEventListener('click' , () => {
+    document.querySelector('.preset-btn .active').classList.remove('active');
+    document.querySelector('.preset-btn').classList.add('active');
+  });
+
   // ============================================================
   // PAYPAL BUTTON RENDERING
   // ============================================================
@@ -427,6 +432,7 @@
         setCheckoutStatus(`Pay ${CURRENCY_SYMBOLS[currency]}${amount} in ${currency}`);
         paypalButtonsInstance = buildPayPalButtons(window.paypal, amount, currency);
         paypalButtonsInstance.render('#paypal-button-container');
+
         return;
       } catch (e) {
         console.warn('Fast-path render failed, falling back to SDK reload:', e);
