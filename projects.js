@@ -117,9 +117,9 @@
   // ---- State ----
   let activeProject = null;
   let donationAmount = 10;
+  let donationCurrency = 'GBP';                 // ✅ declared
   const ALLOWED = ['GBP', 'USD', 'EUR'];
   if (!ALLOWED.includes(donationCurrency)) donationCurrency = 'GBP';
-  document.getElementById("currency").textContext = donationCurrency;
   let paypalSDKPromise = null;
   let paypalButtonsInstance = null;
 
@@ -321,14 +321,14 @@
   // ---- PayPal button rendering ----
   function renderPayPalButtons() {
     const container = document.getElementById("paypal-button-container");
-    
     if (!container) return;
 
     const modal = document.getElementById('donationModal');
     if (!modal || !modal.classList.contains('active')) return;
 
     const amount = formatAmount(getDonationAmount());
-    
+    const currency = getDonationCurrency();      // ✅ defined
+
     container.innerHTML = "";
 
     loadPayPalSDK(currency)
@@ -476,10 +476,10 @@
 
     if (currencySelect) {
       currencySelect.addEventListener('change', function() {
-        donationCurrency = this.value;
+        donationCurrency = ALLOWED.includes(this.value) ? this.value : 'GBP';
+        this.value = donationCurrency;
         const symbolEl = document.getElementById('modalCurrencySymbol');
         if (symbolEl) symbolEl.textContent = currencySymbols[donationCurrency] || '£';
-        document.getElementById("currency").textContext = currencySymbols[donationCurrency] || '£';
         renderPayPalButtons();
       });
     }
