@@ -117,7 +117,8 @@
   // ---- State ----
   let activeProject = null;
   let donationAmount = 10;
-  let donationCurrency = 'GBP';
+  const ALLOWED = ['GBP', 'USD', 'EUR'];
+  if (!ALLOWED.includes(donationCurrency)) donationCurrency = 'GBP';
   let paypalSDKPromise = null;
   let paypalButtonsInstance = null;
 
