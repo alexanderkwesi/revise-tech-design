@@ -303,7 +303,7 @@
   function openDonationModal(projectIndex) {
 
     
-    activeProject = projects[projectIndex];
+    const activeProject = projects[projectIndex];
     if (!activeProject) return;
 
     donationAmount = 10;
