@@ -480,8 +480,7 @@
         retry.style.marginTop = '0.5rem';
         retry.style.fontSize = '0.8rem';
         retry.addEventListener('click', () => {
-        paypalButtonsInstance = buildPayPalButtons(paypal, amount, currency);
-        return paypalButtonsInstance.render('#paypal-button-container');
+        paypal.Buttons.render('#paypal-button-container');
         });
         container.appendChild(retry);
       });
