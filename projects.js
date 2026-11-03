@@ -289,6 +289,14 @@
     return (isNaN(n) ? 0 : n).toFixed(2);
   }
 
+  function updatePresetLabels() {
+    const symbol = CURRENCY_SYMBOLS[donationCurrency] || '£';
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      const amt = btn.getAttribute('data-amount');
+      btn.textContent = `${symbol}${amt}`;
+    });
+  }
+
   // ---- PayPal SDK loader (singleton) ----
   function loadPayPalSDK(currency) {
     if (window.paypal && window.__paypalLoadedCurrency === currency) {
@@ -368,16 +376,6 @@
       });
   }
 
-
-  function updatePresetLabels() {
-  const symbols = { GBP: '£', USD: '$', EUR: '€' };
-  const symbol = symbols[donationCurrency] || '£';
-  document.querySelectorAll('.preset-btn').forEach(btn => {
-    const amt = btn.getAttribute('data-amount');
-    btn.textContent = `${symbol}${amt}`;
-  });
-}
-  
   // ---- Modal open / close ----
   function openDonationModal(projectIndex) {
     const project = projects[projectIndex];
@@ -401,8 +399,8 @@
 
     if (titleEl) titleEl.textContent = `Fund ${project.title}`;
     if (descEl) descEl.textContent = project.desc;
-    if (symbolEl) symbolEl.textContent = '£';
-    if (curr) curr.textContent = symbolE1.textContext;
+    if (symbolEl) symbolEl.textContent = CURRENCY_SYMBOLS[donationCurrency] || '£';
+    if (curr) curr.textContent = donationCurrency;
     if (customAmountEl) customAmountEl.value = '';
     if (backerNameEl) backerNameEl.value = '';
     if (backerMessageEl) backerMessageEl.value = '';
@@ -414,6 +412,8 @@
       btn.classList.remove('active');
       if (btn.getAttribute('data-amount') === '10') btn.classList.add('active');
     });
+
+    updatePresetLabels();
 
     if (modal) modal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -497,6 +497,7 @@
         const curr = document.getElementById('currency');
         if (curr) curr.textContent = donationCurrency;
 
+        updatePresetLabels();
         renderPayPalButtons();
       });
     }
