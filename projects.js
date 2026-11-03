@@ -114,20 +114,21 @@
   // ---- Config ----
   const PAYPAL_CLIENT_ID = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
 
-  // ---- Multi-currency config ----
+  // ---- Multi-currency ----
   const ALLOWED = ['GBP', 'USD', 'EUR'];
   const CURRENCY_SYMBOLS = { GBP: '£', USD: '$', EUR: '€' };
   const DEFAULT_CURRENCY = 'GBP';
-  const MIN_AMOUNT_BY_CURRENCY = { GBP: 1, USD: 1, EUR: 1 };
+  const DEFAULT_AMOUNT = 10;
+  const MIN_AMOUNT = 1;
 
   // ---- State ----
   let activeProject = null;
-  let donationAmount = 10;
+  let donationAmount = DEFAULT_AMOUNT;
   let donationCurrency = DEFAULT_CURRENCY;
 
   let paypalSDKPromise = null;
-  let paypalSDKLoadingCurrency = null;   // currency currently being loaded
-  let paypalLoadedCurrency = null;       // currency the SDK is loaded for
+  let paypalSDKLoadingCurrency = null;
+  let paypalLoadedCurrency = null;
   let paypalButtonsInstance = null;
 
   // ============================================================
@@ -191,7 +192,7 @@
   }
 
   // ============================================================
-  // FILTERS
+  // FILTERS / COUNTERS / MOBILE NAV (unchanged)
   // ============================================================
   function initFilters() {
     const filterButtons = document.querySelectorAll('.filter-btn');
@@ -204,38 +205,27 @@
     });
   }
 
-  // ============================================================
-  // COUNTERS
-  // ============================================================
   function initCounters() {
     const counters = document.querySelectorAll('[data-target]');
-
     const countUp = (counter) => {
       const target = +counter.getAttribute('data-target');
       const prefix = counter.getAttribute('data-prefix') || '';
       const suffix = counter.getAttribute('data-suffix') || '';
       const duration = 1500;
       const startTime = performance.now();
-
       const update = (now) => {
         const elapsed = now - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const ease = progress * (2 - progress);
         const currentValue = Math.floor(ease * target);
-
-        if (target >= 100) {
-          counter.textContent = `${prefix}${currentValue.toLocaleString()}${suffix}`;
-        } else {
-          counter.textContent = `${prefix}${currentValue}${suffix}`;
-        }
-
+        counter.textContent = (target >= 100)
+          ? `${prefix}${currentValue.toLocaleString()}${suffix}`
+          : `${prefix}${currentValue}${suffix}`;
         if (progress < 1) requestAnimationFrame(update);
         else counter.textContent = `${prefix}${target.toLocaleString()}${suffix}`;
       };
-
       requestAnimationFrame(update);
     };
-
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -244,13 +234,9 @@
         }
       });
     }, { threshold: 0.1 });
-
     counters.forEach(counter => observer.observe(counter));
   }
 
-  // ============================================================
-  // MOBILE NAV
-  // ============================================================
   function initMobileNav() {
     const toggle = document.querySelector('.nav-toggle');
     const overlay = document.querySelector('.mobile-nav-overlay');
@@ -287,23 +273,11 @@
   // ============================================================
   // DONATION HELPERS
   // ============================================================
-  function getDonationAmount() { return donationAmount; }
-  function getDonationCurrency() { return donationCurrency; }
-
   function formatAmount(value) {
     const n = Number(value);
     return (isNaN(n) ? 0 : n).toFixed(2);
   }
 
-  function updatePresetLabels() {
-    const symbol = CURRENCY_SYMBOLS[donationCurrency] || '£';
-    document.querySelectorAll('.preset-btn').forEach(btn => {
-      const amt = btn.getAttribute('data-amount');
-      btn.textContent = `${symbol}${amt}`;
-    });
-  }
-
-  // Update the "Secure Checkout" status line if it exists
   function setCheckoutStatus(text, isError = false) {
     const el = document.getElementById('secure-checkout-status');
     if (!el) return;
@@ -312,24 +286,21 @@
   }
 
   // ============================================================
-  // PAYPAL SDK LOADER (per-currency, in-flight locked, stale-safe)
+  // PAYPAL SDK LOADER
   // ============================================================
   function loadPayPalSDK(currency) {
     if (!ALLOWED.includes(currency)) {
       return Promise.reject(new Error(`Currency ${currency} not allowed`));
     }
 
-    // Cache hit
     if (window.paypal && paypalLoadedCurrency === currency) {
       return Promise.resolve(window.paypal);
     }
 
-    // Same currency already loading → reuse
     if (paypalSDKLoadingCurrency === currency && paypalSDKPromise) {
       return paypalSDKPromise;
     }
 
-    // Different currency loading → abandon and start fresh
     if (paypalSDKLoadingCurrency && paypalSDKLoadingCurrency !== currency) {
       document.querySelectorAll('script[src*="paypal.com/sdk/js"]').forEach(s => s.remove());
       try { delete window.paypal; } catch (e) { window.paypal = undefined; }
@@ -338,7 +309,6 @@
       paypalSDKPromise = null;
     }
 
-    // Clean slate
     document.querySelectorAll('script[src*="paypal.com/sdk/js"]').forEach(s => s.remove());
     try { delete window.paypal; } catch (e) { window.paypal = undefined; }
     paypalLoadedCurrency = null;
@@ -357,7 +327,6 @@
 
       s.onload = () => {
         paypalSDKLoadingCurrency = null;
-
         if (!window.paypal) {
           reject(new Error(
             `PayPal SDK loaded for ${currency}, but window.paypal is missing. ` +
@@ -365,15 +334,11 @@
           ));
           return;
         }
-
         paypalLoadedCurrency = currency;
-
-        // Ignore stale loads (user switched currency mid-flight)
         if (currency !== donationCurrency) {
           reject(new Error(`Stale SDK load for ${currency} ignored`));
           return;
         }
-
         resolve(window.paypal);
       };
 
@@ -398,6 +363,7 @@
   // ============================================================
   function buildPayPalButtons(paypal, amount, currency) {
     return paypal.Buttons({
+      style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
       createOrder: (data, actions) =>
         actions.order.create({
           purchase_units: [{
@@ -430,7 +396,7 @@
   }
 
   // ============================================================
-  // PAYPAL BUTTON RENDERING (fast + slow path, status-aware)
+  // PAYPAL BUTTON RENDERING
   // ============================================================
   function renderPayPalButtons() {
     const container = document.getElementById('paypal-button-container');
@@ -439,53 +405,43 @@
     const modal = document.getElementById('donationModal');
     if (!modal || !modal.classList.contains('active')) return;
 
-    // Validate currency
-    if (!ALLOWED.includes(donationCurrency)) {
-      donationCurrency = DEFAULT_CURRENCY;
-    }
+    if (!ALLOWED.includes(donationCurrency)) donationCurrency = DEFAULT_CURRENCY;
 
-    const amount = formatAmount(getDonationAmount());
-    const currency = getDonationCurrency();
+    const amount = formatAmount(donationAmount);
+    const currency = donationCurrency;
 
-    // Enforce per-currency minimum
-    const min = MIN_AMOUNT_BY_CURRENCY[currency] || 1;
-    if (Number(amount) < min) {
-      setCheckoutStatus(
-        `Minimum ${CURRENCY_SYMBOLS[currency]}${min} for ${currency}.`,
-        true
-      );
+    if (Number(amount) < MIN_AMOUNT) {
+      setCheckoutStatus(`Minimum ${CURRENCY_SYMBOLS[currency]}${MIN_AMOUNT} for ${currency}.`, true);
       container.innerHTML =
-        `<p style="font-size:0.85rem;color:#c00;">Minimum ${CURRENCY_SYMBOLS[currency]}${min} for ${currency}.</p>`;
+        `<p style="font-size:0.85rem;color:#c00;">Minimum ${CURRENCY_SYMBOLS[currency]}${MIN_AMOUNT} for ${currency}.</p>`;
       return;
     }
 
-    // ---- Fast path: SDK already loaded for this currency ----
+    // Fast path
     if (window.paypal && paypalLoadedCurrency === currency) {
       try {
         if (paypalButtonsInstance && typeof paypalButtonsInstance.close === 'function') {
           try { paypalButtonsInstance.close(); } catch (e) { /* ignore */ }
         }
         container.innerHTML = '';
-        setCheckoutStatus(`Pay in ${currency}`);
+        setCheckoutStatus(`Pay ${CURRENCY_SYMBOLS[currency]}${amount} in ${currency}`);
         paypalButtonsInstance = buildPayPalButtons(window.paypal, amount, currency);
         paypalButtonsInstance.render('#paypal-button-container');
         return;
       } catch (e) {
         console.warn('Fast-path render failed, falling back to SDK reload:', e);
-        // Fall through to slow path
       }
     }
 
-    // ---- Slow path: (re)load SDK for this currency ----
+    // Slow path
     setCheckoutStatus(`Loading PayPal for ${currency}…`);
     container.innerHTML = '<p style="font-size:0.85rem;color:#555;">Loading PayPal…</p>';
 
     loadPayPalSDK(currency)
       .then((paypal) => {
         if (!paypal) throw new Error('PayPal SDK unavailable');
-
         container.innerHTML = '';
-        setCheckoutStatus(`Pay in ${currency}`);
+        setCheckoutStatus(`Pay ${CURRENCY_SYMBOLS[currency]}${amount} in ${currency}`);
 
         if (paypalButtonsInstance && typeof paypalButtonsInstance.close === 'function') {
           try { paypalButtonsInstance.close(); } catch (e) { /* ignore */ }
@@ -510,7 +466,6 @@
         retry.textContent = 'Retry';
         retry.style.marginTop = '0.5rem';
         retry.style.fontSize = '0.8rem';
-        // ✅ Correct: re-run the whole render flow, not paypal.Buttons.render
         retry.addEventListener('click', () => renderPayPalButtons());
         container.appendChild(retry);
       });
@@ -524,46 +479,22 @@
     if (!project) return;
 
     activeProject = project;
-    donationAmount = 10;
+    donationAmount = DEFAULT_AMOUNT;
     donationCurrency = DEFAULT_CURRENCY;
 
     const titleEl = document.getElementById('modalProjectTitle');
     const descEl = document.getElementById('modalProjectDesc');
-    const symbolEl = document.getElementById('modalCurrencySymbol');
-    const customAmountEl = document.getElementById('customAmount');
-    const backerNameEl = document.getElementById('backerName');
-    const backerMessageEl = document.getElementById('backerMessage');
-    const currencyEl = document.getElementById('donationCurrency');
     const successScreen = document.getElementById('modalSuccessScreen');
     const modal = document.getElementById('donationModal');
-    const curr = document.getElementById('currency');
 
     if (titleEl) titleEl.textContent = `Fund ${project.title}`;
     if (descEl) descEl.textContent = project.desc;
-    if (symbolEl) symbolEl.textContent = CURRENCY_SYMBOLS[donationCurrency];
-    if (curr) curr.textContent = donationCurrency;
-    if (customAmountEl) {
-      customAmountEl.value = '';
-      customAmountEl.min = MIN_AMOUNT_BY_CURRENCY[donationCurrency];
-    }
-    if (backerNameEl) backerNameEl.value = '';
-    if (backerMessageEl) backerMessageEl.value = '';
-    if (currencyEl) currencyEl.value = donationCurrency;
     if (successScreen) successScreen.classList.remove('active');
-
-    const presetButtons = document.querySelectorAll('.preset-btn');
-    presetButtons.forEach(btn => {
-      btn.classList.remove('active');
-      if (btn.getAttribute('data-amount') === '10') btn.classList.add('active');
-    });
-
-    updatePresetLabels();
     setCheckoutStatus('Loading PayPal…');
 
     if (modal) modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    // Two rAFs to ensure modal is painted and laid out before PayPal renders
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         renderPayPalButtons();
@@ -590,7 +521,6 @@
   function triggerDonationSuccess() {
     const successScreen = document.getElementById('modalSuccessScreen');
     const successProjectName = document.getElementById('successProjectName');
-
     if (successProjectName && activeProject) {
       successProjectName.textContent = activeProject.title;
     }
@@ -612,62 +542,10 @@
         if (e.target === this) closeDonationModal();
       });
     }
-
-    const presets = document.querySelectorAll('.preset-btn');
-    const customAmountInput = document.getElementById('customAmount');
-
-    presets.forEach(btn => {
-      btn.addEventListener('click', function() {
-        presets.forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        donationAmount = parseFloat(this.getAttribute('data-amount')) || 0;
-        if (customAmountInput) customAmountInput.value = '';
-        renderPayPalButtons();
-      });
-    });
-
-    if (customAmountInput) {
-      customAmountInput.addEventListener('input', function() {
-        presets.forEach(b => b.classList.remove('active'));
-        const val = parseFloat(this.value);
-        donationAmount = isNaN(val) ? 0 : val;
-        renderPayPalButtons();
-      });
-    }
-
-    const currencySelect = document.getElementById('donationCurrency');
-
-    if (currencySelect) {
-      currencySelect.addEventListener('change', function() {
-        // 1. Normalise + persist
-        donationCurrency = ALLOWED.includes(this.value) ? this.value : DEFAULT_CURRENCY;
-        this.value = donationCurrency;
-
-        // 2. Update currency indicators
-        const symbolEl = document.getElementById('modalCurrencySymbol');
-        if (symbolEl) symbolEl.textContent = CURRENCY_SYMBOLS[donationCurrency];
-
-        const curr = document.getElementById('currency');
-        if (curr) curr.textContent = donationCurrency;
-
-        if (customAmountInput) customAmountInput.min = MIN_AMOUNT_BY_CURRENCY[donationCurrency];
-
-        updatePresetLabels();
-
-        // 3. Force PayPal to reload for the new currency and re-render.
-        //    Two rAFs ensure the DOM has painted the new labels/symbol
-        //    before we tear down and re-render the container.
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            renderPayPalButtons();
-          });
-        });
-      });
-    }
   }
 
   // ============================================================
-  // GOOGLE FORM FOCUS HELPER
+  // GOOGLE FORM FOCUS
   // ============================================================
   function focusGoogleForm() {
     const iframe = document.getElementById('google-form-iframe');
@@ -689,7 +567,6 @@
     initMobileNav();
     initDonationModalListeners();
     focusGoogleForm();
-    updatePresetLabels();
   });
 
   window.addEventListener('hashchange', () => {
