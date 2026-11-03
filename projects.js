@@ -409,9 +409,19 @@
   }
 
   // ---- PayPal button rendering ----
+    // ---- Secure checkout status helper ----
+  function setCheckoutStatus(text, isError = false) {
+    const el = document.getElementById('secure-checkout-status');
+    if (!el) return;
+    el.textContent = text;
+    el.style.color = isError ? '#c00' : '#555';
+  }
+
+  // ---- PayPal button rendering (fast + slow path, status-aware) ----
   function renderPayPalButtons() {
     const container = document.getElementById('paypal-button-container');
-    if (!container) return;
+    const section = document.getElementById('secure-checkout-section');
+    if (!container || !section) return;
 
     const modal = document.getElementById('donationModal');
     if (!modal || !modal.classList.contains('active')) return;
@@ -427,8 +437,11 @@
     // Enforce per-currency minimum
     const min = MIN_AMOUNT_BY_CURRENCY[currency] || 1;
     if (Number(amount) < min) {
-      container.innerHTML =
-        `<p style="font-size:0.85rem;color:#c00;">Minimum ${CURRENCY_SYMBOLS[currency]}${min} for ${currency}.</p>`;
+      setCheckoutStatus(
+        `Minimum ${CURRENCY_SYMBOLS[currency]}${min} for ${currency}.`,
+        true
+      );
+      container.innerHTML = '';
       return;
     }
 
@@ -439,23 +452,36 @@
           try { paypalButtonsInstance.close(); } catch (e) { /* ignore */ }
         }
         container.innerHTML = '';
+        setCheckoutStatus(`Pay in ${currency}`);
+
         paypalButtonsInstance = buildPayPalButtons(window.paypal, amount, currency);
         paypalButtonsInstance.render('#paypal-button-container');
+
+        // Re-measure in case the container was display:none at render time
+        requestAnimationFrame(() => {
+          if (container.offsetHeight === 0 && section.offsetHeight > 0) {
+            // Force a reflow then re-render once
+            container.style.display = 'block';
+            container.style.minHeight = '45px';
+          }
+        });
         return;
       } catch (e) {
         console.warn('Fast-path render failed, falling back to SDK reload:', e);
-        // Fall through to loader
+        // Fall through to slow path
       }
     }
 
-    // Slow path: need to (re)load the SDK for this currency
-    container.innerHTML = '<p style="font-size:0.85rem;color:#555;">Loading PayPal…</p>';
+    // Slow path: (re)load SDK for this currency
+    setCheckoutStatus(`Loading PayPal for ${currency}…`);
+    container.innerHTML = '';
 
     loadPayPalSDK(currency)
       .then((paypal) => {
         if (!paypal) throw new Error('PayPal SDK unavailable');
 
         container.innerHTML = '';
+        setCheckoutStatus(`Pay in ${currency}`);
 
         if (paypalButtonsInstance && typeof paypalButtonsInstance.close === 'function') {
           try { paypalButtonsInstance.close(); } catch (e) { /* ignore */ }
@@ -468,11 +494,7 @@
         console.error('Failed to load PayPal SDK:', err);
         container.innerHTML = '';
 
-        const p = document.createElement('p');
-        p.textContent = 'Unable to load PayPal. Please try again.';
-        p.style.color = '#c00';
-        p.style.fontSize = '0.85rem';
-        container.appendChild(p);
+        setCheckoutStatus('Unable to load PayPal. Please try again.', true);
 
         const retry = document.createElement('button');
         retry.type = 'button';
