@@ -386,10 +386,12 @@
     const currencyEl = document.getElementById('donationCurrency');
     const successScreen = document.getElementById('modalSuccessScreen');
     const modal = document.getElementById('donationModal');
+    const curr = document.getElementById('currency');
 
     if (titleEl) titleEl.textContent = `Fund ${project.title}`;
     if (descEl) descEl.textContent = project.desc;
     if (symbolEl) symbolEl.textContent = '£';
+    if (symbolEl) curr.textContext = '£';
     if (customAmountEl) customAmountEl.value = '';
     if (backerNameEl) backerNameEl.value = '';
     if (backerMessageEl) backerMessageEl.value = '';
@@ -472,12 +474,12 @@
     }
 
     const currencySelect = document.getElementById('donationCurrency');
-    const curr = document.getElementById('currency');
+    
     const currencySymbols = { 'GBP': '£', 'USD': '$', 'EUR': '€' };
 
     if (currencySelect) {
       currencySelect.addEventListener('change', function() {
-        curr.textContext = ALLOWED.includes(this.value) ? this.value : 'GBP';
+        this.value = "GBP" ? curr.textContext = '£' || this.value = 'USD' ? curr.textContext = '$' || curr.textContext = '€';
         donationCurrency = ALLOWED.includes(this.value) ? this.value : 'GBP';
         this.value = donationCurrency;
         const symbolEl = document.getElementById('modalCurrencySymbol');
