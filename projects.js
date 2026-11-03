@@ -486,7 +486,6 @@ window.addEventListener("load", () => {
   document.addEventListener('DOMContentLoaded', () => {
    
     renderProjects('all');
-    OnLoad();
     initFilters();
     initCounters();
     initMobileNav();
