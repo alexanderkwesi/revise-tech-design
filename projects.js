@@ -117,7 +117,7 @@
   // ---- State ----
   let activeProject = null;
   let donationAmount = 10;
-  let donationCurrency = 'GBP';                 // ✅ declared
+  let donationCurrency = 'GBP';
   const ALLOWED = ['GBP', 'USD', 'EUR'];
   if (!ALLOWED.includes(donationCurrency)) donationCurrency = 'GBP';
   let paypalSDKPromise = null;
@@ -327,7 +327,7 @@
     if (!modal || !modal.classList.contains('active')) return;
 
     const amount = formatAmount(getDonationAmount());
-    const currency = getDonationCurrency();      // ✅ defined
+    const currency = getDonationCurrency();
 
     container.innerHTML = "";
 
@@ -391,7 +391,7 @@
     if (titleEl) titleEl.textContent = `Fund ${project.title}`;
     if (descEl) descEl.textContent = project.desc;
     if (symbolEl) symbolEl.textContent = '£';
-    if (!curr) curr.textContext = '£';
+    if (curr) curr.textContent = 'GBP';
     if (customAmountEl) customAmountEl.value = '';
     if (backerNameEl) backerNameEl.value = '';
     if (backerMessageEl) backerMessageEl.value = '';
@@ -474,16 +474,19 @@
     }
 
     const currencySelect = document.getElementById('donationCurrency');
-    
     const currencySymbols = { 'GBP': '£', 'USD': '$', 'EUR': '€' };
 
     if (currencySelect) {
       currencySelect.addEventListener('change', function() {
-        ALLOWED.includes(this.value) = "GBP" ? curr.textContext = '£' || ALLOWED.includes(this.value) = 'USD' ? curr.textContext = '$' || curr.textContext = '€';
         donationCurrency = ALLOWED.includes(this.value) ? this.value : 'GBP';
         this.value = donationCurrency;
+
         const symbolEl = document.getElementById('modalCurrencySymbol');
         if (symbolEl) symbolEl.textContent = currencySymbols[donationCurrency] || '£';
+
+        const curr = document.getElementById('currency');
+        if (curr) curr.textContent = donationCurrency;
+
         renderPayPalButtons();
       });
     }
