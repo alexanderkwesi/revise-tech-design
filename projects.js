@@ -335,8 +335,7 @@
   }
 
   function closeDonationModal() {
-    document.getElementById('#closeDonationModal').classList.add("hidden");
-    document.getElementById('#closeDonationModal').classList.remove("active");
+    document.getElementById('closeDonationModal').classList.remove("active");
     document.body.style.overflow = '';
   }
 
@@ -367,6 +366,14 @@
   setTimeout(() => {
   triggerDonationSuccess();
   }, 1000);
+
+  }
+
+  function OnLoad()
+  {
+    window.onload({
+      renderButtonForPayPal(clientId, curr, amount.toFixed(2));
+    });
 
   }
 
@@ -454,11 +461,9 @@
 
   // Dom ready initialization
   document.addEventListener('DOMContentLoaded', () => {
-    const amount = getDonationAmount();
-    const curr = getDonationCurrency();
-    const clientId = "BAAH-MwZpyci773ZkqlhjG4b9ANOgioXck1Mdq5zeGXOIFVsUtX6aBILoMQjlKDCy0frWLrpl3hxzYfigE";
+   
     renderProjects('all');
-    renderButtonForPayPal(clientId, curr, amount.toFixed(2)); 
+    OnLoad();
     initFilters();
     initCounters();
     initMobileNav();
