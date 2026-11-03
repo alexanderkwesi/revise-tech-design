@@ -108,6 +108,34 @@
       status: "Live · World finder for almost anything",
       tags: ["Location & Search", "SaaS ·Finder"],
       link: "https://find-whatsit.lovable.app"
+    },
+    // ---- Brands ----
+    {
+      category: "Data Storage · Innovation",
+      filterCategory: "brands",
+      title: "Scourge · High-Performance Data Storage",
+      desc: "A high-performance data storage device engineered to take storage to the next level—advanced components, high-grade formulations, and consumer-led design.",
+      status: "Pre-seed · Data storage innovation",
+      tags: ["Data storage", "Consumer hardware"],
+      link: "#scourge"
+    },
+    {
+      category: "Eyecare · Restorative",
+      filterCategory: "brands",
+      title: "Restoracin · Restorative Eyecare",
+      desc: "A restorative eyecare range focused on repair and layer penetration through a non-surgical procedure—formulated for sensitive and compromised eye health.",
+      status: "Pre-seed · Eyecare & wellness",
+      tags: ["Eyecare", "Non-surgical"],
+      link: "#restoracin"
+    },
+    {
+      category: "Derma · Clinical",
+      filterCategory: "brands",
+      title: "RadFrac Derma · Clinical Derma Brand",
+      desc: "A clinical derma-fractional skincare brand combining professional-grade treatments with at-home regimens for advanced skin resurfacing and renewal.",
+      status: "Pre-seed · Derma aesthetics",
+      tags: ["Derma aesthetics", "Clinical skincare"],
+      link: "#radfrac-derma"
     }
   ];
 
@@ -149,6 +177,7 @@
       if (p.filterCategory === 'ai') headerClass = 'header-ai';
       else if (p.filterCategory === 'fintech') headerClass = 'header-fintech';
       else if (p.filterCategory === 'saas') headerClass = 'header-saas';
+      else if (p.filterCategory === 'brands') headerClass = 'header-brands';
 
       return `
         <article class="project-neo-card" style="opacity: 0; transform: translateY(15px); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
@@ -168,7 +197,7 @@
             </div>
             <div class="project-actions" style="display: flex; gap: 0.5rem; align-items: center;">
               ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="project-card-action-link">Visit →</a>` : ''}
-              <button class="project-card-donate-btn" data-index="${originalIndex}">Fund</button>
+              <button class="project-card-donate-btn" type="button" data-index="${originalIndex}">Fund</button>
             </div>
           </div>
         </article>
@@ -192,7 +221,7 @@
   }
 
   // ============================================================
-  // FILTERS / COUNTERS / MOBILE NAV (unchanged)
+  // FILTERS
   // ============================================================
   function initFilters() {
     const filterButtons = document.querySelectorAll('.filter-btn');
@@ -205,6 +234,9 @@
     });
   }
 
+  // ============================================================
+  // COUNTERS
+  // ============================================================
   function initCounters() {
     const counters = document.querySelectorAll('[data-target]');
     const countUp = (counter) => {
@@ -237,6 +269,9 @@
     counters.forEach(counter => observer.observe(counter));
   }
 
+  // ============================================================
+  // MOBILE NAV
+  // ============================================================
   function initMobileNav() {
     const toggle = document.querySelector('.nav-toggle');
     const overlay = document.querySelector('.mobile-nav-overlay');
@@ -270,8 +305,6 @@
     });
   }
 
-
-
   // ============================================================
   // DONATION HELPERS
   // ============================================================
@@ -294,15 +327,12 @@
     if (!ALLOWED.includes(currency)) {
       return Promise.reject(new Error(`Currency ${currency} not allowed`));
     }
-
     if (window.paypal && paypalLoadedCurrency === currency) {
       return Promise.resolve(window.paypal);
     }
-
     if (paypalSDKLoadingCurrency === currency && paypalSDKPromise) {
       return paypalSDKPromise;
     }
-
     if (paypalSDKLoadingCurrency && paypalSDKLoadingCurrency !== currency) {
       document.querySelectorAll('script[src*="paypal.com/sdk/js"]').forEach(s => s.remove());
       try { delete window.paypal; } catch (e) { window.paypal = undefined; }
@@ -310,7 +340,6 @@
       paypalSDKLoadingCurrency = null;
       paypalSDKPromise = null;
     }
-
     document.querySelectorAll('script[src*="paypal.com/sdk/js"]').forEach(s => s.remove());
     try { delete window.paypal; } catch (e) { window.paypal = undefined; }
     paypalLoadedCurrency = null;
@@ -326,14 +355,10 @@
       const s = document.createElement('script');
       s.src = url;
       s.async = true;
-
       s.onload = () => {
         paypalSDKLoadingCurrency = null;
         if (!window.paypal) {
-          reject(new Error(
-            `PayPal SDK loaded for ${currency}, but window.paypal is missing. ` +
-            `Check Client ID, ad blockers, and CSP.`
-          ));
+          reject(new Error(`PayPal SDK loaded for ${currency}, but window.paypal is missing.`));
           return;
         }
         paypalLoadedCurrency = currency;
@@ -343,17 +368,11 @@
         }
         resolve(window.paypal);
       };
-
       s.onerror = () => {
         paypalSDKLoadingCurrency = null;
         paypalLoadedCurrency = null;
-        reject(new Error(
-          `Failed to load PayPal SDK for ${currency}. ` +
-          `Common causes: invalid/live-mismatched Client ID, ad blocker, ` +
-          `CSP blocking *.paypal.com, or offline.`
-        ));
+        reject(new Error(`Failed to load PayPal SDK for ${currency}.`));
       };
-
       document.head.appendChild(s);
     });
 
@@ -397,8 +416,6 @@
     container.appendChild(p);
   }
 
-
-
   // ============================================================
   // PAYPAL BUTTON RENDERING
   // ============================================================
@@ -431,10 +448,9 @@
         setCheckoutStatus(`Pay ${CURRENCY_SYMBOLS[currency]}${amount} in ${currency}`);
         paypalButtonsInstance = buildPayPalButtons(window.paypal, amount, currency);
         paypalButtonsInstance.render('#paypal-button-container');
-
         return;
       } catch (e) {
-        console.warn('Fast-path render failed, falling back to SDK reload:', e);
+        console.warn('Fast-path render failed:', e);
       }
     }
 
@@ -489,13 +505,31 @@
 
     const titleEl = document.getElementById('modalProjectTitle');
     const descEl = document.getElementById('modalProjectDesc');
+    const symbolEl = document.getElementById('modalCurrencySymbol');
+    const customAmountEl = document.getElementById('customAmount');
+    const backerNameEl = document.getElementById('backerName');
+    const backerMessageEl = document.getElementById('backerMessage');
+    const currencyEl = document.getElementById('donationCurrency');
     const successScreen = document.getElementById('modalSuccessScreen');
     const modal = document.getElementById('donationModal');
 
     if (titleEl) titleEl.textContent = `Fund ${project.title}`;
     if (descEl) descEl.textContent = project.desc;
+    if (symbolEl) symbolEl.textContent = CURRENCY_SYMBOLS[donationCurrency];
+    if (customAmountEl) { customAmountEl.value = ''; customAmountEl.min = MIN_AMOUNT; }
+    if (backerNameEl) backerNameEl.value = '';
+    if (backerMessageEl) backerMessageEl.value = '';
+    if (currencyEl) currencyEl.value = donationCurrency;
     if (successScreen) successScreen.classList.remove('active');
     setCheckoutStatus('Loading PayPal…');
+
+    const presetButtons = document.querySelectorAll('.preset-btn');
+    presetButtons.forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.getAttribute('data-amount') === String(DEFAULT_AMOUNT)) btn.classList.add('active');
+    });
+
+    updatePresetLabels();
 
     if (modal) modal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -533,26 +567,24 @@
   }
 
   // ============================================================
+  // PRESET LABEL SYNC
+  // ============================================================
+  function updatePresetLabels() {
+    const symbol = CURRENCY_SYMBOLS[donationCurrency] || '£';
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      const amt = btn.getAttribute('data-amount');
+      btn.textContent = `${symbol}${amt}`;
+    });
+  }
+
+  // ============================================================
   // MODAL LISTENERS
   // ============================================================
   function initDonationModalListeners() {
     const closeBtn = document.getElementById('closeDonationModal');
     const successCloseBtn = document.getElementById('successCloseBtn');
     const modalOverlay = document.getElementById('donationModal');
-        // ---- Preset amount buttons ----
-    const presets = document.querySelectorAll('.preset-btn');
-    presets.forEach(btn => {
-      btn.addEventListener('click', function() {
-        presets.forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
 
-        // ✅ Update the amount from the clicked button
-        donationAmount = parseFloat(this.getAttribute('data-amount')) || 0;
-
-        // Re-render PayPal with the new amount
-        renderPayPalButtons();
-      });
-    });
     if (closeBtn) closeBtn.addEventListener('click', closeDonationModal);
     if (successCloseBtn) successCloseBtn.addEventListener('click', closeDonationModal);
     if (modalOverlay) {
@@ -560,6 +592,68 @@
         if (e.target === this) closeDonationModal();
       });
     }
+
+    const presets = document.querySelectorAll('.preset-btn');
+    const customAmountInput = document.getElementById('customAmount');
+    const currencySelect = document.getElementById('donationCurrency');
+
+    presets.forEach(btn => {
+      btn.addEventListener('click', function() {
+        presets.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        donationAmount = parseFloat(this.getAttribute('data-amount')) || 0;
+        if (customAmountInput) customAmountInput.value = '';
+        renderPayPalButtons();
+      });
+    });
+
+    if (customAmountInput) {
+      customAmountInput.addEventListener('input', function() {
+        presets.forEach(b => b.classList.remove('active'));
+        const val = parseFloat(this.value);
+        donationAmount = isNaN(val) ? 0 : val;
+        renderPayPalButtons();
+      });
+    }
+
+    if (currencySelect) {
+      currencySelect.addEventListener('change', function() {
+        donationCurrency = ALLOWED.includes(this.value) ? this.value : DEFAULT_CURRENCY;
+        this.value = donationCurrency;
+
+        const symbolEl = document.getElementById('modalCurrencySymbol');
+        if (symbolEl) symbolEl.textContent = CURRENCY_SYMBOLS[donationCurrency];
+
+        updatePresetLabels();
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            renderPayPalButtons();
+          });
+        });
+      });
+    }
+  }
+
+  // ============================================================
+  // BRAND FUND BUTTONS
+  // ============================================================
+  function initBrandFundButtons() {
+    const brandMap = {
+      "scourge": "Scourge · High-Performance Data Storage",
+      "restoracin": "Restoracin · Restorative Eyecare",
+      "radfrac-derma": "RadFrac Derma · Clinical Derma Brand"
+    };
+
+    document.querySelectorAll('.brand-neo-block .project-card-donate-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const brand = this.getAttribute('data-brand');
+        const title = brandMap[brand];
+        if (!title) return;
+        const idx = projects.findIndex(p => p.title === title);
+        if (idx >= 0) openDonationModal(idx);
+      });
+    });
   }
 
   // ============================================================
@@ -584,7 +678,9 @@
     initCounters();
     initMobileNav();
     initDonationModalListeners();
+    initBrandFundButtons();
     focusGoogleForm();
+    updatePresetLabels();
   });
 
   window.addEventListener('hashchange', () => {
