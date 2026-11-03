@@ -119,6 +119,7 @@
   let donationAmount = 10;
   let donationCurrency = 'GBP';
   const ALLOWED = ['GBP', 'USD', 'EUR'];
+  const CURRENCY_SYMBOLS = { GBP: '£', USD: '$', EUR: '€' };
   if (!ALLOWED.includes(donationCurrency)) donationCurrency = 'GBP';
   let paypalSDKPromise = null;
   let paypalButtonsInstance = null;
@@ -484,7 +485,6 @@
     }
 
     const currencySelect = document.getElementById('donationCurrency');
-    const currencySymbols = { 'GBP': '£', 'USD': '$', 'EUR': '€' };
 
     if (currencySelect) {
       currencySelect.addEventListener('change', function() {
@@ -492,7 +492,7 @@
         this.value = donationCurrency;
 
         const symbolEl = document.getElementById('modalCurrencySymbol');
-        if (symbolEl) symbolEl.textContent = currencySymbols[donationCurrency] || '£';
+        if (symbolEl) symbolEl.textContent = CURRENCY_SYMBOLS[donationCurrency] || '£';
 
         const curr = document.getElementById('currency');
         if (curr) curr.textContent = donationCurrency;
