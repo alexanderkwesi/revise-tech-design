@@ -288,8 +288,6 @@
 
   // ---- PayPal SDK loader (singleton) ----
   function loadPayPalSDK(currency) {
-    // If we already loaded the SDK for a different currency, reload.
-    // PayPal SDK caches by URL, so we track the currency we loaded for.
     if (window.paypal && window.__paypalLoadedCurrency === currency) {
       return Promise.resolve(window.paypal);
     }
@@ -298,9 +296,7 @@
       return paypalSDKPromise;
     }
 
-    // Remove any existing PayPal script so a new currency can take effect
     document.querySelectorAll('script[src*="paypal.com/sdk/js"]').forEach(s => s.remove());
-    // PayPal also sets a global; delete so it reloads with new params
     try { delete window.paypal; } catch (e) { window.paypal = undefined; }
 
     const url = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(PAYPAL_CLIENT_ID)}&currency=${encodeURIComponent(currency)}&intent=capture`;
@@ -325,7 +321,6 @@
     const container = document.getElementById("paypal-button-container");
     if (!container) return;
 
-    // If the modal isn't open, don't render
     const modal = document.getElementById('donationModal');
     if (!modal || !modal.classList.contains('active')) return;
 
@@ -338,7 +333,6 @@
       .then((paypal) => {
         if (!paypal) throw new Error("PayPal SDK unavailable");
 
-        // Destroy any previous button instance
         if (paypalButtonsInstance && typeof paypalButtonsInstance.close === 'function') {
           try { paypalButtonsInstance.close(); } catch (e) { /* ignore */ }
         }
@@ -364,7 +358,6 @@
       })
       .catch((err) => {
         console.error("Failed to load PayPal SDK:", err);
-        // Fallback: show a simple message so the user isn't stuck
         const fallback = document.createElement('p');
         fallback.textContent = "Unable to load PayPal. Please try again.";
         fallback.style.color = "#c00";
@@ -379,11 +372,9 @@
 
     activeProject = project;
 
-    // Reset donation state to defaults
     donationAmount = 10;
     donationCurrency = 'GBP';
 
-    // Populate modal content
     const titleEl = document.getElementById('modalProjectTitle');
     const descEl = document.getElementById('modalProjectDesc');
     const symbolEl = document.getElementById('modalCurrencySymbol');
@@ -403,7 +394,6 @@
     if (currencyEl) currencyEl.value = 'GBP';
     if (successScreen) successScreen.classList.remove('active');
 
-    // Reset preset buttons
     const presetButtons = document.querySelectorAll('.preset-btn');
     presetButtons.forEach(btn => {
       btn.classList.remove('active');
@@ -413,8 +403,6 @@
     if (modal) modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    // Render PayPal buttons for this donation
-    // Wait a tick so the modal is visible and container has layout
     setTimeout(renderPayPalButtons, 0);
   }
 
@@ -425,7 +413,6 @@
     if (successScreen) successScreen.classList.remove('active');
     document.body.style.overflow = '';
 
-    // Tear down PayPal button instance so it doesn't linger
     if (paypalButtonsInstance && typeof paypalButtonsInstance.close === 'function') {
       try { paypalButtonsInstance.close(); } catch (e) { /* ignore */ }
     }
@@ -460,7 +447,6 @@
       });
     }
 
-    // Preset amount buttons
     const presets = document.querySelectorAll('.preset-btn');
     const customAmountInput = document.getElementById('customAmount');
 
@@ -483,7 +469,6 @@
       });
     }
 
-    // Currency selector
     const currencySelect = document.getElementById('donationCurrency');
     const currencySymbols = { 'GBP': '£', 'USD': '$', 'EUR': '€' };
 
@@ -520,105 +505,5 @@
 
   window.addEventListener('hashchange', () => {
     if (window.location.hash === '#contact') focusGoogleForm();
-  });
-})();
-  function triggerDonationSuccess() {
-    const successScreen = document.getElementById('modalSuccessScreen');
-    const successProjectName = document.getElementById('successProjectName');
-    
-    if (successProjectName) {
-      successProjectName.textContent = activeProject.title;
-    }
-    
-    if (successScreen) {
-      successScreen.classList.add('active');
-    }
-  }
-
-  function initDonationModalListeners() {
-    const closeBtn = document.getElementById('closeDonationModal');
-    const successCloseBtn = document.getElementById('successCloseBtn');
-    const modalOverlay = document.getElementById('donationModal');
-
-    if (closeBtn) closeBtn.addEventListener('click', closeDonationModal);
-    if (successCloseBtn) successCloseBtn.addEventListener('click', closeDonationModal);
-    
-    if (modalOverlay) {
-      modalOverlay.addEventListener('click', function(e) {
-        if (e.target === this) {
-          closeDonationModal();
-          renderButtonForPayPal(clientId, curr, amount.toFixed(2));
-        }
-      });
-    }
-
-    const presets = document.querySelectorAll('.preset-btn');
-    const customAmountInput = document.getElementById('customAmount');
-
-    presets.forEach(btn => {
-      btn.addEventListener('click', function() {
-        presets.forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        donationAmount = parseFloat(this.getAttribute('data-amount'));
-        if (customAmountInput) customAmountInput.value = '';
-      });
-    });
-
-    if (customAmountInput) {
-      customAmountInput.addEventListener('input', function() {
-        presets.forEach(b => b.classList.remove('active'));
-        const val = parseFloat(this.value);
-        donationAmount = isNaN(val) ? 0 : val;
-      });
-    }
-
-    const currencySelect = document.getElementById('donationCurrency');
-    const currencySymbols = {
-      'GBP': '£',
-      'USD': '$',
-      'EUR': '€'
-    };
-
-    if (currencySelect) {
-      currencySelect.addEventListener('change', function() {
-        donationCurrency = this.value;
-        const symbol = currencySymbols[donationCurrency] || '£';
-        document.getElementById('modalCurrencySymbol').textContent = symbol;
-         renderButtonForPayPal(clientId, curr, amount.toFived(2));
-      });
-    }
-  }
-
-  // Focus helper for Google Form iframe
-  function focusGoogleForm() {
-    const iframe = document.getElementById('google-form-iframe');
-    if (iframe) {
-      // Focus the iframe window to allow instant keyboard interaction
-      setTimeout(() => {
-        try {
-          iframe.focus();
-        } catch (e) {
-          console.warn("Unable to programmatically focus Google Form iframe: ", e);
-        }
-      }, 600);
-    }
-  }
-
-  // Dom ready initialization
-  document.addEventListener('DOMContentLoaded', () => {
-   
-    renderProjects('all');
-    initFilters();
-    initCounters();
-    initMobileNav();
-    initDonationModalListeners();
-    focusGoogleForm();
-  });
-
-  // Re-focus on hash navigation
-  window.addEventListener('hashchange', () => {
-    if (window.location.hash === '#contact') {
-      focusGoogleForm();
-    }
   });
 })();
