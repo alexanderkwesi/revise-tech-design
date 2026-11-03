@@ -297,18 +297,20 @@
     });
   }
 
-  // ---- PayPal SDK loader (singleton) ----
+  // ---- PayPal SDK loader (singleton per currency) ----
   function loadPayPalSDK(currency) {
-    if (window.paypal && window.__paypalLoadedCurrency === CURRENCY_SYMBOLS[donationCurrency]) {
+    if (window.paypal && window.__paypalLoadedCurrency === currency) {
       return Promise.resolve(window.paypal);
     }
 
-    if (paypalSDKPromise && window.__paypalLoadedCurrency === CURRENCY_SYMBOLS[donationCurrency]) {
+    if (paypalSDKPromise && window.__paypalLoadedCurrency === currency) {
       return paypalSDKPromise;
     }
 
     document.querySelectorAll('script[src*="paypal.com/sdk/js"]').forEach(s => s.remove());
     try { delete window.paypal; } catch (e) { window.paypal = undefined; }
+    window.__paypalLoadedCurrency = null;
+    paypalSDKPromise = null;
 
     const url = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(PAYPAL_CLIENT_ID)}&currency=${encodeURIComponent(currency)}&intent=capture`;
 
@@ -340,40 +342,41 @@
 
     container.innerHTML = "";
 
-      function loadPayPalSDK(currency) {
-    // Already loaded for this exact currency code → reuse
-    if (window.paypal && window.__paypalLoadedCurrency === currency) {
-      return Promise.resolve(window.paypal);
-    }
+    loadPayPalSDK(currency)
+      .then((paypal) => {
+        if (!paypal) throw new Error("PayPal SDK unavailable");
 
-    // A load for this currency is already in flight → reuse the promise
-    if (paypalSDKPromise && window.__paypalLoadedCurrency === currency) {
-      return paypalSDKPromise;
-    }
+        if (paypalButtonsInstance && typeof paypalButtonsInstance.close === 'function') {
+          try { paypalButtonsInstance.close(); } catch (e) { /* ignore */ }
+        }
 
-    // Currency changed (or first load) → tear down and reload
-    document.querySelectorAll('script[src*="paypal.com/sdk/js"]').forEach(s => s.remove());
-    try { delete window.paypal; } catch (e) { window.paypal = undefined; }
-    window.__paypalLoadedCurrency = null;
-    paypalSDKPromise = null;
+        paypalButtonsInstance = paypal.Buttons({
+          createOrder: (data, actions) =>
+            actions.order.create({
+              purchase_units: [{
+                amount: { value: amount, currency_code: currency }
+              }]
+            }),
+          onApprove: (data, actions) =>
+            actions.order.capture().then((details) => {
+              console.log("Transaction completed by", details.payer && details.payer.name && details.payer.name.given_name);
+              triggerDonationSuccess();
+            }),
+          onError: (err) => {
+            console.error("PayPal error:", err);
+          }
+        });
 
-    const url = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(PAYPAL_CLIENT_ID)}&currency=${encodeURIComponent(currency)}&intent=capture`;
-
-    paypalSDKPromise = new Promise((resolve, reject) => {
-      const s = document.createElement("script");
-      s.src = url;
-      s.async = true;
-      s.onload = () => {
-        window.__paypalLoadedCurrency = currency;   // store the CODE
-        resolve(window.paypal);
-      };
-      s.onerror = () => reject(new Error("Failed to load PayPal SDK"));
-      document.head.appendChild(s);
-    });
-
-    return paypalSDKPromise;
+        return paypalButtonsInstance.render("#paypal-button-container");
+      })
+      .catch((err) => {
+        console.error("Failed to load PayPal SDK:", err);
+        const fallback = document.createElement('p');
+        fallback.textContent = "Unable to load PayPal. Please try again.";
+        fallback.style.color = "#c00";
+        container.appendChild(fallback);
+      });
   }
-  
 
   // ---- Modal open / close ----
   function openDonationModal(projectIndex) {
@@ -413,7 +416,6 @@
     });
 
     updatePresetLabels();
-    
 
     if (modal) modal.classList.add('active');
     document.body.style.overflow = 'hidden';
